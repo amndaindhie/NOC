@@ -69,7 +69,7 @@
 
     <!-- Result Section -->
     <div id="resultCard" class="card" style="display: none;">
-      <div class="card-header bg-primary text-white">
+      <div class="card-header text-white" style="background-color: #1e4356;">
         <h2 class="card-title mb-0">Detail Tiket</h2>
         <p class="mb-0">Informasi lengkap status permintaan Anda</p>
       </div>

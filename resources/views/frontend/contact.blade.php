@@ -10,8 +10,10 @@
     <div class="container position-relative">
       <h1>Contact Us</h1>
       <p>
-        Esse dolorum voluptatum ullam est sint nemo et est ipsa porro
-        placeat quibusdam quia assumenda numquam molestias.
+        
+          For more information about our services or to submit a network installation request,<br>
+          please contact us using the details below. Our Network Operation Center team is ready to support your needs.
+
       </p>
     </div>
   </div>

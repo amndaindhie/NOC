@@ -47,7 +47,7 @@
   {{-- Modals --}}
   @include('frontend.login_modal')
   @include('frontend.register_modal')
-  @include('frontend.otp_verification_modal')
+  {{-- @include('frontend.otp_verification_modal') --}}
 
   <!-- Scroll Top -->
   <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center">

@@ -18,7 +18,7 @@
         <ul>
           <li><i class="bi bi-chevron-right"></i> <a href="{{ url('/') }}">Home</a></li>
           <li><i class="bi bi-chevron-right"></i> <a href="{{ url('/about') }}">Get to know us</a></li>
-          <li><i class="bi bi-chevron-right"></i> <a href="{{ url('/services') }}">Services</a></li>
+          <li><i class="bi bi-chevron-right"></i> <a href="{{ url('/services') }}">Regulasi</a></li>
           <li><i class="bi bi-chevron-right"></i> <a href="{{ url('/tracking-request') }}">Tracking Request</a></li>
         </ul>
       </div>

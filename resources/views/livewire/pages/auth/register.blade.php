@@ -12,13 +12,14 @@ use Illuminate\Validation\Rules;
 use Livewire\Attributes\Layout;
 use Livewire\Volt\Component;
 
-new #[Layout('layouts.guest')] class extends Component
-{
+new #[Layout('layouts.guest')] class extends Component {
     public string $name = '';
     public string $email = '';
     public string $password = '';
     public string $password_confirmation = '';
     public ?string $successMessage = null;
+    public ?string $errorMessage = null;
+    public bool $isLoading = false;
 
     /**
      * Handle the showOtpModal event
@@ -38,40 +39,38 @@ new #[Layout('layouts.guest')] class extends Component
     }
 
     /**
-     * Handle registration success event
-     */
-    public function registrationSuccess($message): void
-    {
-        $this->successMessage = $message;
-    }
-
-    /**
      * Handle an incoming registration request with OTP verification.
      */
     public function register(): void
     {
+        $this->isLoading = true;
+
         Log::info('Livewire registration process started for email: ' . $this->email);
 
         $validated = $this->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
             'password' => ['required', 'string', 'confirmed', Rules\Password::defaults()],
         ]);
 
         try {
             // Generate registration ID
             $registrationId = Str::uuid()->toString();
-            
+
             // Store registration data in cache for 60 minutes (don't create user yet)
-            Cache::put('registration_' . $registrationId, [
-                'name' => $validated['name'],
-                'email' => $validated['email'],
-                'password' => Hash::make($validated['password']),
-            ], 3600);
+            Cache::put(
+                'registration_' . $registrationId,
+                [
+                    'name' => $validated['name'],
+                    'email' => $validated['email'],
+                    'password' => Hash::make($validated['password']),
+                ],
+                3600,
+            );
 
             // Generate OTP
             $otp = EmailVerification::generateOtp();
-            
+
             // Store OTP in email_verifications table
             EmailVerification::create([
                 'email' => $validated['email'],
@@ -92,25 +91,27 @@ new #[Layout('layouts.guest')] class extends Component
                 // Continue anyway and show success message to user
             }
 
-            // Dispatch event to show OTP modal
-            $this->dispatch('otpModalRequested', email: $validated['email']);
-
             // Reset form
             $this->reset(['name', 'email', 'password', 'password_confirmation']);
 
             // Show success message
-            $this->registrationSuccess('Kode OTP telah dikirim ke email Anda. Silakan verifikasi untuk menyelesaikan registrasi.');
+            $this->successMessage = 'Registrasi berhasil! Kode OTP telah dikirim ke email Anda.';
+
+            // Redirect to OTP verification page after showing message
+            $this->dispatch('redirectToOtp', email: $validated['email']);
 
         } catch (\Exception $e) {
             Log::error('Registration failed for email: ' . $validated['email'] . ', Error: ' . $e->getMessage());
-            
+
             $this->addError('email', 'Terjadi kesalahan saat proses registrasi. Silakan coba lagi.');
+        } finally {
+            $this->isLoading = false;
         }
     }
 }; ?>
 
 <div>
-    @if($successMessage)
+    @if ($successMessage)
         <div class="alert alert-success mb-4" wire:poll.5s="clearSuccessMessage">
             {{ $successMessage }}
         </div>
@@ -120,8 +121,10 @@ new #[Layout('layouts.guest')] class extends Component
         <!-- Name -->
         <div class="mb-3">
             <label class="form-label">Name</label>
-            <input wire:model="name" type="text" class="form-control @if($errors->has('name')) is-invalid @endif" id="name" name="name" placeholder="Enter your name" required autofocus autocomplete="name" />
-            @if($errors->has('name'))
+            <input wire:model="name" type="text"
+                class="form-control @if ($errors->has('name')) is-invalid @endif" id="name" name="name"
+                placeholder="Enter your name" required autofocus autocomplete="name" />
+            @if ($errors->has('name'))
                 <div class="invalid-feedback">{{ $errors->first('name') }}</div>
             @endif
         </div>
@@ -129,8 +132,10 @@ new #[Layout('layouts.guest')] class extends Component
         <!-- Email Address -->
         <div class="mb-3">
             <label class="form-label">Email</label>
-            <input wire:model="email" type="email" class="form-control @if($errors->has('email')) is-invalid @endif" id="email" name="email" placeholder="Enter your email" required autocomplete="username" />
-            @if($errors->has('email'))
+            <input wire:model="email" type="email"
+                class="form-control @if ($errors->has('email')) is-invalid @endif" id="email" name="email"
+                placeholder="Enter your email" required autocomplete="username" />
+            @if ($errors->has('email'))
                 <div class="invalid-feedback">{{ $errors->first('email') }}</div>
             @endif
         </div>
@@ -138,8 +143,10 @@ new #[Layout('layouts.guest')] class extends Component
         <!-- Password -->
         <div class="mb-3">
             <label class="form-label">Password</label>
-            <input wire:model="password" type="password" class="form-control @if($errors->has('password')) is-invalid @endif" id="password" name="password" placeholder="Enter your password" required autocomplete="new-password" />
-            @if($errors->has('password'))
+            <input wire:model="password" type="password"
+                class="form-control @if ($errors->has('password')) is-invalid @endif" id="password" name="password"
+                placeholder="Enter your password" required autocomplete="new-password" />
+            @if ($errors->has('password'))
                 <div class="invalid-feedback">{{ $errors->first('password') }}</div>
             @endif
         </div>
@@ -147,15 +154,44 @@ new #[Layout('layouts.guest')] class extends Component
         <!-- Confirm Password -->
         <div class="mb-3">
             <label class="form-label">Confirm Password</label>
-            <input wire:model="password_confirmation" type="password" class="form-control @if($errors->has('password_confirmation')) is-invalid @endif" id="password_confirmation" name="password_confirmation" placeholder="Confirm your password" required autocomplete="new-password" />
-            @if($errors->has('password_confirmation'))
+            <input wire:model="password_confirmation" type="password"
+                class="form-control @if ($errors->has('password_confirmation')) is-invalid @endif" id="password_confirmation"
+                name="password_confirmation" placeholder="Confirm your password" required autocomplete="new-password" />
+            @if ($errors->has('password_confirmation'))
                 <div class="invalid-feedback">{{ $errors->first('password_confirmation') }}</div>
             @endif
         </div>
 
         <!-- Register Button -->
-        <button type="submit" class="btn btn-noc w-100 rounded-pill">
-            Register
+        <button type="submit" class="btn btn-noc w-100 rounded-pill" wire:loading.attr="disabled" wire:loading.class="opacity-50">
+            <span wire:loading.remove>Mendaftar</span>
+            <span wire:loading>
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                Memproses...
+            </span>
         </button>
     </form>
 </div>
+
+<script>
+    document.addEventListener('livewire:init', () => {
+        Livewire.on('otpModalRequested', (data) => {
+            console.log("OTP modal requested for:", data.email);
+
+            const target = data.target ?? '#otpModal';
+            const modalEl = document.querySelector(target);
+            if (modalEl) {
+                const modal = new bootstrap.Modal(modalEl);
+                modal.show();
+            }
+        });
+
+        Livewire.on('redirectToOtp', (data) => {
+            // Wait 2 seconds to show success message, then redirect
+            setTimeout(() => {
+                window.location.href = '{{ route("verification.otp.page") }}?email=' + encodeURIComponent(data.email);
+            }, 2000);
+        });
+    });
+</script>
+

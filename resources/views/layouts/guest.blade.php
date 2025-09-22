@@ -61,7 +61,7 @@
 
   @include('frontend.register_modal')
 
-  @include('frontend.otp_verification_modal')
+  {{-- @include('frontend.otp_verification_modal') --}}
 
   <!-- Scroll Top -->
   <a
@@ -89,17 +89,73 @@
   <script src="{{ asset('assets/js/main.js') }}"></script>
 
   <!-- Custom Registration Scripts -->
-  <script>
-    function showOtpModal(email) {
-        // Set the email in the OTP modal
-        const emailInput = document.getElementById('otp-email');
-        if (emailInput) {
-            emailInput.value = email;
-        }
+  <script type="module">
+    import modalTargets from '/resources/js/modal-targets.js';
 
-        // Show the OTP modal
-        const otpModal = new bootstrap.Modal(document.getElementById('otpVerificationModal'));
-        otpModal.show();
+    function closeRegisterModal(callback) {
+        const registerModalEl = document.querySelector(modalTargets.register);
+        if (!registerModalEl) {
+            if (callback) callback();
+            return;
+        }
+        const bsRegisterModal = bootstrap.Modal.getInstance(registerModalEl);
+        if (bsRegisterModal) {
+            registerModalEl.addEventListener('hidden.bs.modal', () => {
+                // Remove backdrop and modal-open class after modal hidden
+                const backdrop = document.querySelector('.modal-backdrop');
+                if (backdrop) backdrop.remove();
+                document.body.classList.remove('modal-open');
+                if (callback) callback();
+            }, { once: true });
+            bsRegisterModal.hide();
+        } else {
+            // If no bootstrap instance, forcibly hide modal
+            registerModalEl.classList.remove('show');
+            registerModalEl.style.display = 'none';
+            const backdrop = document.querySelector('.modal-backdrop');
+            if (backdrop) backdrop.remove();
+            document.body.classList.remove('modal-open');
+            if (callback) callback();
+        }
+    }
+
+    function showOtpModal(email) {
+        // Close register modal first, then show OTP modal
+        closeRegisterModal(() => {
+            // Set the email in the OTP modal
+            const emailInput = document.getElementById('otp-email');
+            if (emailInput) {
+                emailInput.value = email;
+            }
+
+            // Also set in resend form
+            const resendEmailInput = document.getElementById('resend-email');
+            if (resendEmailInput) {
+                resendEmailInput.value = email;
+            }
+
+            // Clear any previous OTP code
+            const otpCodeInput = document.getElementById('otp-code');
+            if (otpCodeInput) {
+                otpCodeInput.value = '';
+            }
+
+            // Clear any previous messages
+            const otpMessage = document.getElementById('otp-message');
+            if (otpMessage) {
+                otpMessage.innerHTML = '<div class="alert alert-info">Kode OTP telah dikirim ke email: <strong>' + email + '</strong></div>';
+            }
+
+            // Show the OTP modal using modalTargets
+            const otpModalEl = document.querySelector(modalTargets.otp);
+            if (otpModalEl) {
+                const otpModal = new bootstrap.Modal(otpModalEl, {
+                    backdrop: 'static', // Prevent closing by clicking backdrop
+                    keyboard: false // Prevent closing by pressing escape
+                });
+                otpModal.show();
+            }
+        });
     }
 
     // Listen for Livewire events

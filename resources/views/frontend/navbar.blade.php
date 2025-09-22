@@ -43,7 +43,7 @@
           <a href="{{ route('frontend.contact') }}" class="{{ request()->routeIs('frontend.contact') ? 'active' : '' }}">Contact</a>
         </li>
         <li>
-          <a href="{{ route('frontend.showpdf') }}" class="{{ request()->routeIs('frontend.showpdf') ? 'active' : '' }}">Regulasi</a>
+          <a href="{{ route('frontend.showpdf') }}" class="{{ request()->routeIs('frontend.showpdf') ? 'active' : '' }}">Regulations</a>
         </li>
 
         @guest

@@ -6,20 +6,6 @@
 
 <!-- Stats Grid -->
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-    <!-- Users Stat -->
-    <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-        <div class="flex items-center">
-            <div class="p-3 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 mr-4">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                </svg>
-            </div>
-            <div>
-                <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Total Users</p>
-                <p class="text-2xl font-semibold">{{ $stats['users'] }}</p>
-            </div>
-        </div>
-    </div>
 
     <!-- NOC Requests Stat -->
     <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
@@ -32,6 +18,21 @@
             <div>
                 <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Total NOC Requests</p>
                 <p class="text-2xl font-semibold">{{ $stats['noc_requests'] ?? 0 }}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Users Stat -->
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+        <div class="flex items-center">
+            <div class="p-3 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 mr-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                </svg>
+            </div>
+            <div>
+                <p class="text-sm font-medium text-gray-600 dark:text-gray-400">Total Users</p>
+                <p class="text-2xl font-semibold">{{ $stats['users'] }}</p>
             </div>
         </div>
     </div>
@@ -99,70 +100,40 @@
 
     <!-- Recent Activity Section -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <!-- Recent NOC Activities -->
+        <!-- Recent User Registrations -->
         <div class="bg-white dark:bg-gray-800 rounded-lg shadow">
             <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
-                <h3 class="text-lg font-semibold">Recent NOC Activities</h3>
+                <h3 class="text-lg font-semibold">Recent User</h3>
             </div>
             <div class="p-6">
                 <div class="overflow-x-auto">
                     <table class="min-w-full">
                         <thead>
                             <tr class="text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                                <th class="px-4 py-3">Type</th>
-                                <th class="px-4 py-3">Tenant</th>
-                                <th class="px-4 py-3">Status</th>
+                                <th class="px-4 py-3">Name</th>
+                                <th class="px-4 py-3">Email</th>
                                 <th class="px-4 py-3">Date</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                            @foreach($recentUsers as $user)
                             <tr>
                                 <td class="px-4 py-3 whitespace-nowrap">
-                                    <span class="text-sm font-medium">Installation</span>
+                                    <span class="text-sm font-medium">{{ $user->name }}</span>
                                 </td>
                                 <td class="px-4 py-3 whitespace-nowrap">
-                                    <span class="text-sm">Tenant-001</span>
-                                </td>
-                                <td class="px-4 py-3 whitespace-nowrap">
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Completed</span>
+                                    <span class="text-sm">{{ $user->email }}</span>
                                 </td>
                                 <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                                    {{ now()->format('M d, Y') }}
+                                    {{ $user->created_at->format('M d, Y') }}
                                 </td>
                             </tr>
-                            <tr>
-                                <td class="px-4 py-3 whitespace-nowrap">
-                                    <span class="text-sm font-medium">Maintenance</span>
-                                </td>
-                                <td class="px-4 py-3 whitespace-nowrap">
-                                    <span class="text-sm">Tenant-002</span>
-                                </td>
-                                <td class="px-4 py-3 whitespace-nowrap">
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">In Progress</span>
-                                </td>
-                                <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                                    {{ now()->subDays(1)->format('M d, Y') }}
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="px-4 py-3 whitespace-nowrap">
-                                    <span class="text-sm font-medium">Complaint</span>
-                                </td>
-                                <td class="px-4 py-3 whitespace-nowrap">
-                                    <span class="text-sm">Tenant-003</span>
-                                </td>
-                                <td class="px-4 py-3 whitespace-nowrap">
-                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Pending</span>
-                                </td>
-                                <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
-                                    {{ now()->subDays(2)->format('M d, Y') }}
-                                </td>
-                            </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
                 <div class="mt-4 text-right">
-                    <a href="{{ route('admin.noc.instalasi') }}" class="text-sm font-medium text-blue-600 dark:text-blue-400 hover:underline">View all NOC requests</a>
+                    <a href="#" class="text-sm font-medium text-blue-600 dark:text-blue-400 hover:underline">View all users</a>
                 </div>
             </div>
         </div>

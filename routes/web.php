@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\View;
+
 use App\Livewire\Admin\Dashboard;
 use App\Http\Controllers\Admin\NocAdminController;
 use App\Http\Controllers\Admin\NocCrudController;
@@ -64,6 +66,12 @@ Route::middleware('guest')->group(function () {
     Route::post('/resend-otp', [EmailVerificationController::class, 'resend'])
         ->middleware(['throttle:3,1', 'App\Http\Middleware\RateLimitOtp'])
         ->name('verification.otp.resend');
+
+    // New route for OTP verification page
+    Route::get('/otp-verification', function () {
+        $email = request('email');
+        return view('frontend.otp_verification_page', ['email' => $email]);
+    })->name('verification.otp.page');
 });
 
  // ================== ADMIN ROUTES ==================

@@ -18,7 +18,7 @@
 
   <div class="container">
     <!-- Success/Error Messages -->
-    @if(session('success'))
+@if(session('success'))
       <div class="alert alert-success alert-dismissible fade show" role="alert">
         <i class="bi bi-check-circle-fill me-2"></i>{{ session('success') }}
         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
@@ -32,7 +32,7 @@
       </div>
     @endif
 
-    @if($errors->any())
+    {{--@if($errors->any())
       <div class="alert alert-danger alert-dismissible fade show" role="alert">
         <i class="bi bi-exclamation-triangle-fill me-2"></i>
         <strong>An error occurred:</strong>
@@ -43,10 +43,10 @@
         </ul>
         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
       </div>
-    @endif
+    @endif--}}
 
     <div class="form-section">
-      <form method="POST" action="{{ route('noc.instalasi.store') }}" enctype="multipart/form-data" onsubmit="return checkAuth()" novalidate>
+      <form method="POST" action="{{ route('noc.instalasi.store') }}" enctype="multipart/form-data" onsubmit="return checkAuth()" novalidate @if($errors->any()) class="was-validated" @endif>
         @csrf
         <div class="mb-3">
           <label class="form-label">Tenant Company Name <span class="text-danger">*</span></label>
@@ -78,8 +78,8 @@
           <small class="form-text text-muted">The email will be automatically filled from your account</small>
         </div>
         <div class="mb-3">
-          <label class="form-label">ISP Name</label>
-          <select class="form-select @error('nama_isp') is-invalid @enderror" name="nama_isp">
+          <label class="form-label">ISP Name <span class="text-danger">*</span></label>
+          <select class="form-select @error('nama_isp') is-invalid @enderror" name="nama_isp" required>
             <option value="">Select ISP Name</option>
             <option value="iForte" {{ old('nama_isp') == 'iForte' ? 'selected' : '' }}>iForte</option>
             <option value="Telkom" {{ old('nama_isp') == 'Telkom' ? 'selected' : '' }}>Telkom</option>
@@ -92,8 +92,8 @@
           @enderror
         </div>
         <div class="mb-3">
-          <label class="form-label">Tax Identification Number (NPWP)</label>
-          <input type="text" class="form-control @error('nomor_npwp') is-invalid @enderror" name="nomor_npwp" value="{{ old('nomor_npwp') }}" placeholder="00.000.000.0-000.000" />
+          <label class="form-label">Tax Identification Number (NPWP) <span class="text-danger">*</span></label>
+          <input type="text" class="form-control @error('nomor_npwp') is-invalid @enderror" name="nomor_npwp" value="{{ old('nomor_npwp') }}" placeholder="00.000.000.0-000.000" required />
           @error('nomor_npwp')
             <div class="invalid-feedback">{{ $message }}</div>
           @enderror
@@ -106,8 +106,8 @@
           @enderror
         </div>
         <div class="mb-3">
-          <label class="form-label">Placement Location</label>
-          <select class="form-select @error('lokasi_pemasangan') is-invalid @enderror" name="lokasi_pemasangan">
+          <label class="form-label">Placement Location <span class="text-danger">*</span></label>
+          <select class="form-select @error('lokasi_pemasangan') is-invalid @enderror" name="lokasi_pemasangan" required>
             <option value="">Select Placement Location</option>
             <option value="BPSP / FSP" {{ old('lokasi_pemasangan') == 'BPSP / FSP' ? 'selected' : '' }}>BPSP / FSP</option>
             <option value="Kavling" {{ old('lokasi_pemasangan') == 'Kavling' ? 'selected' : '' }}>Kavling</option>
@@ -137,15 +137,15 @@
           @enderror
         </div>
         <div class="mb-3">
-          <label class="form-label">Bandwidth Speed</label>
-          <input type="text" class="form-control @error('kecepatan_bandwidth') is-invalid @enderror" name="kecepatan_bandwidth" value="{{ old('kecepatan_bandwidth') }}" />
+          <label class="form-label">Bandwidth Speed <span class="text-danger">*</span></label>
+          <input type="text" class="form-control @error('kecepatan_bandwidth') is-invalid @enderror" name="kecepatan_bandwidth" value="{{ old('kecepatan_bandwidth') }}" required />
           @error('kecepatan_bandwidth')
             <div class="invalid-feedback">{{ $message }}</div>
           @enderror
         </div>
         <div class="mb-3">
-          <label class="form-label">Topology Scheme</label>
-          <select class="form-select @error('skema_topologi') is-invalid @enderror" name="skema_topologi">
+          <label class="form-label">Topology Scheme <span class="text-danger">*</span></label>
+          <select class="form-select @error('skema_topologi') is-invalid @enderror" name="skema_topologi" required>
             <option value="">Select Topology Scheme</option>
             <option value="FTTx (BPSP, Rusunawa dan Gedung Pengelola)" {{ old('skema_topologi') == 'FTTx (BPSP, Rusunawa dan Gedung Pengelola)' ? 'selected' : '' }}>FTTx (BPSP, Apartment, Office Management)</option>
             <option value="Direct Core / Konvensional (Pabrik / Manufaktur)" {{ old('skema_topologi') == 'Direct Core / Konvensional (Pabrik / Manufaktur)' ? 'selected' : '' }}>Direct Core / Conventional (Factory / Manufacturing)</option>

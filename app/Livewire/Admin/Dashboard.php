@@ -102,7 +102,7 @@ class Dashboard extends Component
     public function loadNotifications()
     {
         $this->recentNotifications = \App\Models\NocNotification::orderBy('created_at', 'desc')
-            ->take(5)
+            ->take(3)
             ->get();
     }
 

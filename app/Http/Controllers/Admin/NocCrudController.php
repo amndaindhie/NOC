@@ -331,6 +331,11 @@ class NocCrudController extends Controller
             'status' => $request->status,
         ];
 
+        // Set tanggal_selesai automatically when status is changed to "Selesai"
+        if ($request->status === 'Selesai') {
+            $data['tanggal_selesai'] = now();
+        }
+
         // Update the ticket using the service to add tracking entry
         $this->trackingService->updateTicketData(
             $maintenance->nomor_tracking,

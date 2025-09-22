@@ -28,11 +28,12 @@
       <a href="{{ route('frontend.about') }}">Get to know us</a>
     </li>
     <li>
-      <i class="bi bi-chevron-right"></i> <a href="{{ route('noc.instalasi.form') }}">Services</a>
-    </li>
-    <li>
       <i class="bi bi-chevron-right"></i>
       <a href="{{ route('frontend.tracking') }}">Tracking Request</a>
+    </li>
+      <li>
+      <i class="bi bi-chevron-right"></i> 
+      <a href="{{ route('frontend.showpdf') }}">Regulations</a>
     </li>
   </ul>
 </div>
