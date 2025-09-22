@@ -9,10 +9,10 @@
           <p>Pelabuhan, Ketanggan, Gringsing,</p>
           <p>Batang Regency, Central Java 51281</p>
           <p class="mt-3">
-            <strong>Phone:</strong> <span>(+62) 8123-1323-323</span>
+            <strong>Phone:</strong> <span>(+62) 8123-1323</span>
           </p>
           <p>
-            <strong>Email:</strong> <span>amandaindhie5@gmail.com </span>
+            <strong>Email:</strong> <span>email@gmail.com </span>
           </p>
         </div>
       </div>

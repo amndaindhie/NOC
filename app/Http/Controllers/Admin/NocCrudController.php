@@ -172,9 +172,7 @@ class NocCrudController extends Controller
 
         $instalasi = NocInstallationRequest::findOrFail($id);
 
-        $data = [
-            'status' => $request->status,
-        ];
+        $data = ['status' => $request->status];
 
         if ($request->status === 'Ditolak') {
             $data['tanggal_instalasi'] = null;
@@ -182,7 +180,6 @@ class NocCrudController extends Controller
             $data['tanggal_selesai'] = now();
         }
 
-        // Update the ticket using the service to add tracking entry
         $this->trackingService->updateTicketData(
             $instalasi->nomor_tiket,
             $data,
@@ -190,8 +187,17 @@ class NocCrudController extends Controller
             $request->comment
         );
 
+        // Tambahin log manual
+        Log::info('Installation status updated', [
+            'ticket' => $instalasi->nomor_tiket,
+            'id' => $instalasi->id,
+            'new_status' => $request->status,
+            'updated_by' => Auth::user()->name ?? 'Admin',
+        ]);
+
         return redirect()->route('admin.noc.instalasi')->with('success', 'Permintaan instalasi berhasil diperbarui');
     }
+
 
     public function destroyInstallation($id)
     {

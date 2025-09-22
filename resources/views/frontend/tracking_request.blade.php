@@ -260,7 +260,7 @@
             showLoading(false);
             console.log('Response status:', response.status);
             if (!response.ok) {
-              throw new Error('Tiket tidak ditemukan atau terjadi kesalahan server');
+              throw new Error('Tiket tidak ditemukan');
             }
             return response.json();
           })

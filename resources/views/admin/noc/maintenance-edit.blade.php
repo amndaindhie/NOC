@@ -83,7 +83,6 @@
             <!-- Status Update Form -->
             <form action="{{ route('admin.noc.maintenance.update', $maintenance->id) }}" method="POST">
                 @csrf
-                @method('PUT')
 
                 <div class="border-t pt-6">
                     <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-4">Update Status</h3>

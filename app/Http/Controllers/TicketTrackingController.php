@@ -6,6 +6,7 @@ use App\Services\TicketTrackingService;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class TicketTrackingController extends Controller
 {
@@ -53,82 +54,73 @@ class TicketTrackingController extends Controller
      * Update ticket data (admin)
      * PUT /api/tracking/{nomor_tiket}
      */
-    public function updateTicket(Request $request, string $nomorTiket): JsonResponse
-    {
-        try {
-            // Validate input
-            $request->validate([
-                'status' => 'required|string|max:50',
-                // Add other fields to update as needed
+
+
+public function updateTicket(Request $request, string $nomorTiket): JsonResponse
+{
+    try {
+        $request->validate([
+            'status' => 'required|string|max:50',
+        ]);
+
+        if (!Auth::check() || !Auth::user()->hasRole('admin')) {
+            Log::warning('Unauthorized ticket update attempt', [
+                'ticket' => $nomorTiket,
+                'user' => Auth::user()->name ?? 'Guest'
             ]);
 
-            // Authorization check (assuming admin middleware or add here)
-            if (!Auth::check() || !Auth::user()->hasRole('admin')) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Unauthorized'
-                ], 403);
-            }
-
-            $updateData = $request->only(['status']); // Add other fields if needed
-
-            $updatedTicket = $this->trackingService->updateTicketData($nomorTiket, $updateData, Auth::user()->name);
-
-            if (!$updatedTicket) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Tiket tidak ditemukan'
-                ], 404);
-            }
-
-            return response()->json([
-                'success' => true,
-                'data' => $updatedTicket,
-                'message' => 'Tiket berhasil diperbarui'
-            ]);
-
-        } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Terjadi kesalahan saat memperbarui tiket',
-                'error' => $e->getMessage()
-            ], 500);
+                'message' => 'Unauthorized'
+            ], 403);
         }
-    }
 
-    /**
-     * Search tickets
-     * POST /api/tracking/search
-     */
-    public function search(Request $request): JsonResponse
-    {
-        try {
-            $request->validate([
-                'nomor_tiket' => 'nullable|string|max:50',
-                'nomor_tenant' => 'nullable|string|max:50',
-                'tipe' => 'nullable|in:instalasi,maintenance,keluhan,terminasi'
+        $updateData = $request->only(['status']);
+        $updatedTicket = $this->trackingService->updateTicketData(
+            $nomorTiket,
+            $updateData,
+            Auth::user()->name
+        );
+
+        if (!$updatedTicket) {
+            Log::warning('Ticket not found during update', [
+                'ticket' => $nomorTiket,
+                'user' => Auth::user()->name
             ]);
 
-            $results = $this->trackingService->searchTickets(
-                $request->input('nomor_tiket'),
-                $request->input('nomor_tenant'),
-                $request->input('tipe')
-            );
-
-            return response()->json([
-                'success' => true,
-                'data' => $results,
-                'total' => $results->count()
-            ]);
-
-        } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Terjadi kesalahan saat pencarian',
-                'error' => $e->getMessage()
-            ], 500);
+                'message' => 'Tiket tidak ditemukan'
+            ], 404);
         }
+
+        // ✅ Log sukses update
+        Log::info('Ticket updated successfully', [
+            'ticket' => $nomorTiket,
+            'status' => $updateData['status'],
+            'updated_by' => Auth::user()->name
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'data' => $updatedTicket,
+            'message' => 'Tiket berhasil diperbarui'
+        ]);
+
+    } catch (\Exception $e) {
+        Log::error('Error updating ticket', [
+            'ticket' => $nomorTiket,
+            'error' => $e->getMessage()
+        ]);
+
+        return response()->json([
+            'success' => false,
+            'message' => 'Terjadi kesalahan saat memperbarui tiket',
+            'error' => $e->getMessage()
+        ], 500);
     }
+}
+
 
     /**
      * Get all tickets for a tenant

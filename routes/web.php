@@ -30,7 +30,10 @@ Route::view('/showpdf', 'frontend.showpdf')->name('frontend.showpdf');
 Route::get('/tracking-request', [App\Http\Controllers\Frontend\TicketTrackingFrontendController::class, 'index'])->name('frontend.tracking');
 
 // ================== AUTH ROUTES ==================
-Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
+Route::get('/login', function () {
+    return redirect()->route('home');
+})->name('login');
+
 Route::post('/login', [AuthenticatedSessionController::class, 'store']);
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 
@@ -92,7 +95,7 @@ Route::middleware(['auth', 'App\Http\Middleware\RedirectByRole'])->prefix('admin
             Route::post('/instalasi/store', [NocCrudController::class, 'storeInstallation'])->name('instalasi.store');
             Route::get('/instalasi/{id}', [NocCrudController::class, 'showInstallation'])->name('instalasi.show');
             Route::get('/instalasi/{id}/edit', [NocCrudController::class, 'editInstallation'])->name('instalasi.edit');
-            Route::put('/instalasi/{id}', [NocCrudController::class, 'updateInstallation'])->name('instalasi.update');
+            Route::post('/instalasi/{id}', [NocCrudController::class, 'updateInstallation'])->name('instalasi.update');
             Route::delete('/instalasi/{id}', [NocCrudController::class, 'destroyInstallation'])->name('instalasi.destroy');
             // Export routes
             Route::get('/instalasi/export/excel', [NocCrudController::class, 'exportExcelInstallation'])->name('instalasi.export.excel');
@@ -104,7 +107,7 @@ Route::middleware(['auth', 'App\Http\Middleware\RedirectByRole'])->prefix('admin
             Route::post('/maintenance/store', [NocCrudController::class, 'storeMaintenance'])->name('maintenance.store');
             Route::get('/maintenance/{id}', [NocCrudController::class, 'showMaintenance'])->name('maintenance.show');
             Route::get('/maintenance/{id}/edit', [NocCrudController::class, 'editMaintenance'])->name('maintenance.edit');
-            Route::put('/maintenance/{id}', [NocCrudController::class, 'updateMaintenance'])->name('maintenance.update');
+            Route::post('/maintenance/{id}', [NocCrudController::class, 'updateMaintenance'])->name('maintenance.update');
             Route::delete('/maintenance/{id}', [NocCrudController::class, 'destroyMaintenance'])->name('maintenance.destroy');
             // Export routes
             Route::get('/maintenance/export/excel', [NocCrudController::class, 'exportExcelMaintenance'])->name('maintenance.export.excel');
@@ -116,7 +119,7 @@ Route::middleware(['auth', 'App\Http\Middleware\RedirectByRole'])->prefix('admin
             Route::post('/keluhan/store', [NocCrudController::class, 'storeComplaint'])->name('keluhan.store');
             Route::get('/keluhan/{id}', [NocCrudController::class, 'showComplaint'])->name('keluhan.show');
             Route::get('/keluhan/{id}/edit', [NocCrudController::class, 'editComplaint'])->name('keluhan.edit');
-            Route::put('/keluhan/{id}', [NocCrudController::class, 'updateComplaint'])->name('keluhan.update');
+            Route::post('/keluhan/{id}', [NocCrudController::class, 'updateComplaint'])->name('keluhan.update');
             Route::delete('/keluhan/{id}', [NocCrudController::class, 'destroyComplaint'])->name('keluhan.destroy');
             // Export routes
             Route::get('/keluhan/export/excel', [NocCrudController::class, 'exportExcelComplaint'])->name('keluhan.export.excel');
@@ -128,7 +131,7 @@ Route::middleware(['auth', 'App\Http\Middleware\RedirectByRole'])->prefix('admin
             Route::post('/terminasi/store', [NocCrudController::class, 'storeTermination'])->name('terminasi.store');
             Route::get('/terminasi/{id}', [NocCrudController::class, 'showTermination'])->name('terminasi.show');
             Route::get('/terminasi/{id}/edit', [NocCrudController::class, 'editTermination'])->name('terminasi.edit');
-            Route::put('/terminasi/{id}', [NocCrudController::class, 'updateTermination'])->name('terminasi.update');
+            Route::post('/terminasi/{id}', [NocCrudController::class, 'updateTermination'])->name('terminasi.update');
             Route::delete('/terminasi/{id}', [NocCrudController::class, 'destroyTermination'])->name('terminasi.destroy');
             // Export routes
             Route::get('/terminasi/export/excel', [NocCrudController::class, 'exportExcelTermination'])->name('terminasi.export.excel');
@@ -179,7 +182,7 @@ Route::prefix('api/tracking')->name('api.tracking.')->group(function () {
     Route::get('/tenant/{nomor_tenant}', [TicketTrackingController::class, 'getByTenant'])->name('tenant');
     Route::post('/search', [TicketTrackingController::class, 'search'])->name('search');
     Route::post('/add', [TicketTrackingController::class, 'addTrackingEntry'])->name('add');
-    Route::put('/{nomor_tiket}', [TicketTrackingController::class, 'updateTicket'])->name('update');
+    Route::post('/{nomor_tiket}', [TicketTrackingController::class, 'updateTicket'])->name('update');
 });
 
 // Frontend routes for ticket tracking

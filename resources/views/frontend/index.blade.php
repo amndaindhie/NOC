@@ -23,7 +23,7 @@
               Network Operation Center is the network monitoring center for
               all companies in the Batang Integrated Industrial Estate.
             </p>
-            <a href="about.html" class="btn-get-started">Read More</a>
+            <a href="{{ route('frontend.about') }}" class="btn-get-started">Read More</a>
           </div>
         </div>
         <!-- End Carousel Item -->

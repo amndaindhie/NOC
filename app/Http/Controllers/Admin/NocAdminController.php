@@ -13,25 +13,25 @@ class NocAdminController extends Controller
 {
     public function instalasi()
     {
-        $instalasi = NocInstallationRequest::orderBy('id', 'asc')->paginate(5);
+        $instalasi = NocInstallationRequest::orderBy('id', 'asc')->paginate(10);
         return view('admin.noc.instalasi', compact('instalasi'));
     }
 
     public function maintenance()
     {
-        $maintenance = NocMaintenanceRequest::orderBy('id', 'asc')->paginate(5);
+        $maintenance = NocMaintenanceRequest::orderBy('id', 'asc')->paginate(10);
         return view('admin.noc.maintenance', compact('maintenance'));
     }
 
     public function keluhan()
     {
-        $keluhan = NocComplaint::orderBy('id', 'asc')->paginate(5);
+        $keluhan = NocComplaint::orderBy('id', 'asc')->paginate(10);
         return view('admin.noc.keluhan', compact('keluhan'));
     }
 
     public function terminasi()
     {
-        $terminasi = NocTermination::orderBy('id', 'asc')->paginate(5);
+        $terminasi = NocTermination::orderBy('id', 'asc')->paginate(10);
         return view('admin.noc.terminasi', compact('terminasi'));
     }
 }

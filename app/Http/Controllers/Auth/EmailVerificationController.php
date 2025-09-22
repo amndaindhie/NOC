@@ -32,24 +32,30 @@ class EmailVerificationController extends Controller
         try {
             Log::info('Checking verification record', ['email' => $request->email]);
 
-            $verification = EmailVerification::where('otp', $request->otp)
-                ->where('email', $request->email)
+            // Cari OTP berdasarkan email + kode OTP
+            $verification = EmailVerification::where('email', $request->email)
+                ->where('otp', $request->otp)
                 ->where('is_used', false)
-                ->where('expires_at', '>', now())
                 ->first();
 
             if (!$verification) {
-                Log::warning('OTP verification failed - invalid or expired OTP', ['email' => $request->email, 'otp' => $request->otp]);
-
+                // OTP tidak ditemukan / salah
+                $message = 'Kode OTP tidak valid.';
                 if ($request->expectsJson() || $request->ajax()) {
-                    return response()->json([
-                        'success' => false,
-                        'message' => 'Kode OTP tidak valid atau sudah kadaluarsa.'
-                    ], 422);
+                    return response()->json(['success' => false, 'message' => $message], 422);
                 }
-
-                return back()->withErrors(['otp' => 'Kode OTP tidak valid atau sudah kadaluarsa.'])->withInput();
+                return back()->withErrors(['otp' => $message])->withInput();
             }
+
+            // OTP ketemu, tapi sudah kadaluarsa
+            if ($verification->expires_at <= now()) {
+                $message = 'Kode OTP sudah kadaluarsa.';
+                if ($request->expectsJson() || $request->ajax()) {
+                    return response()->json(['success' => false, 'message' => $message], 422);
+                }
+                return back()->withErrors(['otp' => $message])->withInput();
+            }
+
 
             Log::info('OTP verification found', ['verification_id' => $verification->id, 'registration_id' => $verification->registration_id]);
 
@@ -78,7 +84,7 @@ class EmailVerificationController extends Controller
                 'password' => $registrationData['password'],
                 'email_verified_at' => now(),
             ]);
-            
+
             // Assign default 'user' role to new user
             $user->assignRole('user');
 
@@ -96,17 +102,16 @@ class EmailVerificationController extends Controller
             Auth::login($user);
             Log::info('User logged in successfully', ['user_id' => $user->id]);
 
-if ($request->expectsJson() || $request->ajax()) {
-    return response()->json([
-        'success' => true,
-        'message' => 'Verifikasi berhasil! Registrasi selesai.',
-        'redirect' => route('home')
-    ]);
-}
+            if ($request->expectsJson() || $request->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Verifikasi berhasil! Registrasi selesai.',
+                    'redirect' => route('home')
+                ]);
+            }
 
             return redirect()->route('home')
                 ->with('success', 'Registrasi berhasil! Selamat datang di sistem NOC.');
-
         } catch (\Exception $e) {
             Log::error('OTP verification failed with error: ' . $e->getMessage(), [
                 'email' => $request->email,
@@ -210,8 +215,7 @@ if ($request->expectsJson() || $request->ajax()) {
                 }
 
                 return back()->with('status', 'OTP baru telah dikirim ke email Anda.')
-                             ->with('success', true);
-
+                    ->with('success', true);
             } catch (\Exception $e) {
                 Log::error('Failed to send resend OTP email: ' . $e->getMessage(), ['email' => $email]);
 
@@ -223,9 +227,8 @@ if ($request->expectsJson() || $request->ajax()) {
                 }
 
                 return back()->with('status', 'Gagal mengirim OTP. Silakan coba lagi.')
-                             ->with('error', true);
+                    ->with('error', true);
             }
-
         } catch (\Exception $e) {
             Log::error('Resend OTP failed with error: ' . $e->getMessage(), [
                 'email' => $email,
