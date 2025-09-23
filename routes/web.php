@@ -136,9 +136,6 @@ Route::middleware(['auth', 'App\Http\Middleware\RedirectByRole'])->prefix('admin
             // Export routes
             Route::get('/terminasi/export/excel', [NocCrudController::class, 'exportExcelTermination'])->name('terminasi.export.excel');
             Route::get('/terminasi/export/csv', [NocCrudController::class, 'exportCsvTermination'])->name('terminasi.export.csv');
-
-            // Test route for installation first record (without auth for testing)
-            Route::get('/test/installation-first', [\App\Http\Controllers\Admin\NocTestController::class, 'getFirstInstallation'])->name('test.installation.first')->withoutMiddleware(['auth', 'App\Http\Middleware\RedirectByRole']);
         });
 
 

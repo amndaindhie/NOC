@@ -1,0 +1,152 @@
+<div>
+    <!-- Success Message -->
+    @if (session('status'))
+        <div class="alert alert-success d-flex align-items-center" role="alert">
+            <i class="bi bi-check-circle-fill me-2"></i>
+            <div>{{ session('status') }}</div>
+        </div>
+    @endif
+
+    <!-- Error Messages -->
+    @if ($errors->any())
+        <div class="alert alert-danger d-flex align-items-center" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            <div>
+                @foreach ($errors->all() as $error)
+                    {{ $error }}<br>
+                @endforeach
+            </div>
+        </div>
+    @endif
+
+    <div class="mb-4">
+        <p class="text-muted mb-3">
+            {{ __('Masukkan alamat email Anda dan kami akan mengirimkan link reset password.') }}
+        </p>
+    </div>
+
+    <form wire:submit="sendPasswordResetLink" class="user">
+        <div class="form-group mb-4">
+            <label for="email" class="form-label fw-semibold">
+                <i class="bi bi-envelope-at me-2"></i>{{ __('Alamat Email') }}
+            </label>
+            <div class="input-group">
+                <span class="input-group-text bg-light border-end-0">
+                    <i class="bi bi-envelope text-muted"></i>
+                </span>
+                <input
+                    wire:model="email"
+                    type="email"
+                    class="form-control form-control-lg border-start-0 @error('email') is-invalid @enderror"
+                    id="email"
+                    name="email"
+                    placeholder="Masukkan email Anda"
+                    required
+                    autofocus
+                    autocomplete="email"
+                >
+                @error('email')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+            <small class="form-text text-muted">
+                Kami akan mengirimkan link reset password ke email ini
+            </small>
+        </div>
+
+        <div class="d-grid">
+            <button
+                type="submit"
+                class="btn btn-primary btn-lg"
+                wire:loading.attr="disabled"
+                wire:loading.class="btn-secondary"
+            >
+                <span wire:loading.remove wire:target="sendPasswordResetLink">
+                    <i class="bi bi-send me-2"></i>{{ __('Kirim Link Reset') }}
+                </span>
+                <span wire:loading wire:target="sendPasswordResetLink">
+                    <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                    Mengirim...
+                </span>
+            </button>
+        </div>
+    </form>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize forgot password modal functionality
+    initializeForgotPasswordModal();
+
+    // Re-initialize when Livewire updates the DOM
+    document.addEventListener('livewire:updated', function() {
+        initializeForgotPasswordModal();
+    });
+});
+
+function initializeForgotPasswordModal() {
+    // Check if Bootstrap is loaded
+    if (typeof bootstrap === 'undefined') {
+        console.warn('Bootstrap is not loaded yet. Retrying in 500ms...');
+        setTimeout(initializeForgotPasswordModal, 500);
+        return;
+    }
+
+    // Check if modal element exists
+    const modalElement = document.getElementById('forgotPasswordModal');
+    if (!modalElement) {
+        console.warn('Forgot password modal element not found');
+        return;
+    }
+
+    // Initialize modal if not already done
+    let modal = bootstrap.Modal.getInstance(modalElement);
+    if (!modal) {
+        modal = new bootstrap.Modal(modalElement, {
+            backdrop: 'static',
+            keyboard: false
+        });
+        console.log('Forgot password modal initialized');
+    }
+
+    // Listen for close modal event from Livewire
+    Livewire.on('close-forgot-password-modal', () => {
+        if (modal) {
+            modal.hide();
+            console.log('Forgot password modal closed via Livewire event');
+        }
+    });
+
+    // Add click handler for forgot password button as backup
+    const forgotPasswordButtons = document.querySelectorAll('[data-bs-target="#forgotPasswordModal"]');
+    forgotPasswordButtons.forEach(button => {
+        // Remove existing event listeners to prevent duplicates
+        button.removeEventListener('click', handleForgotPasswordClick);
+        button.addEventListener('click', handleForgotPasswordClick);
+    });
+
+    function handleForgotPasswordClick(e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        if (modal) {
+            modal.show();
+            console.log('Forgot password modal opened via button click');
+        } else {
+            console.error('Modal instance not available');
+            // Try to create modal instance if it doesn't exist
+            const modalElement = document.getElementById('forgotPasswordModal');
+            if (modalElement && typeof bootstrap !== 'undefined') {
+                modal = new bootstrap.Modal(modalElement, {
+                    backdrop: 'static',
+                    keyboard: false
+                });
+                modal.show();
+                console.log('Modal instance created and opened');
+            }
+        }
+    }
+
+    console.log('Forgot password modal initialization completed');
+}
+</script>

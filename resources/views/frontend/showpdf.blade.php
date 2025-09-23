@@ -20,10 +20,7 @@
         <div class="container">
             <div class="text-center mb-4">
                 <a href="{{ asset('assets/pdf/VARIASI BAHASA GEN.pdf') }}" class="btn btn-noc" target="_blank">
-                    <i class="bi bi-box-arrow-down"></i> Unduh PDF
-                </a>
-                <a href="{{ asset('assets/pdf/VARIASI BAHASA GEN.pdf') }}" class="btn btn-secondary" target="_blank">
-                    <i class="bi bi-printer"></i> Cetak
+                    <i class="bi bi-box-arrow-down"></i> Download PDF
                 </a>
             </div>
             <div class="pdf-container shadow rounded">

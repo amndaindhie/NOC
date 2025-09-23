@@ -233,5 +233,5 @@
       </div>
     </div>
   </section>
-  <!-- /Features Section -->
+  <!-- /Features Section -->
 @endsection

@@ -96,4 +96,20 @@ class User extends Authenticatable
     {
         $this->increment('tenant_entry_count');
     }
+
+    /**
+     * Send the password reset notification.
+     *
+     * @param  string  $token
+     * @return void
+     */
+    public function sendPasswordResetNotification($token)
+    {
+        $url = url(route('password.reset.form', [
+            'token' => $token,
+            'email' => $this->getEmailForPasswordReset(),
+        ], false));
+
+        $this->notify(new \App\Mail\PasswordResetNotification($url, $this->email));
+    }
 }

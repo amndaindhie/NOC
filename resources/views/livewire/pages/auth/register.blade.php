@@ -9,6 +9,7 @@ use App\Mail\EmailVerificationOtp;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rules;
+use App\Rules\AllowedEmailDomain;
 use Livewire\Attributes\Layout;
 use Livewire\Volt\Component;
 
@@ -39,6 +40,38 @@ new #[Layout('layouts.guest')] class extends Component {
     }
 
     /**
+     * Real-time email validation
+     */
+    public function updatedEmail(): void
+    {
+        $this->validateOnly('email', [
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class, new AllowedEmailDomain],
+        ]);
+    }
+
+    /**
+     * Real-time password confirmation validation
+     */
+    public function updatedPassword(): void
+    {
+        if (!empty($this->password_confirmation)) {
+            $this->validateOnly('password', [
+                'password' => ['required', 'string', 'confirmed', Rules\Password::defaults()],
+            ]);
+        }
+    }
+
+    /**
+     * Real-time password confirmation validation
+     */
+    public function updatedPasswordConfirmation(): void
+    {
+        $this->validateOnly('password', [
+            'password' => ['required', 'string', 'confirmed', Rules\Password::defaults()],
+        ]);
+    }
+
+    /**
      * Handle an incoming registration request with OTP verification.
      */
     public function register(): void
@@ -49,7 +82,7 @@ new #[Layout('layouts.guest')] class extends Component {
 
         $validated = $this->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class, new AllowedEmailDomain],
             'password' => ['required', 'string', 'confirmed', Rules\Password::defaults()],
         ]);
 
@@ -164,10 +197,10 @@ new #[Layout('layouts.guest')] class extends Component {
 
         <!-- Register Button -->
         <button type="submit" class="btn btn-noc w-100 rounded-pill" wire:loading.attr="disabled" wire:loading.class="opacity-50">
-            <span wire:loading.remove>Mendaftar</span>
+            <span wire:loading.remove>Register</span>
             <span wire:loading>
                 <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                Memproses...
+                loading...
             </span>
         </button>
     </form>

@@ -24,7 +24,7 @@ class NocFormController extends Controller
     {
         // Validasi autentikasi - redirect ke login jika belum login
         if (!Auth::check()) {
-            return redirect()->route('login')->with('error', 'Anda harus login terlebih dahulu untuk mengirim form permintaan instalasi.');
+            return redirect()->route('home')->with('error', 'Anda harus login terlebih dahulu untuk mengirim form permintaan instalasi.');
         }
 
         try {
@@ -219,7 +219,7 @@ class NocFormController extends Controller
     {
         // Validasi autentikasi - redirect ke login jika belum login
         if (!Auth::check()) {
-            return redirect()->route('login')->with('error', 'Anda harus login terlebih dahulu untuk mengirim form permintaan maintenance.');
+            return redirect()->route('home')->with('error', 'Anda harus login terlebih dahulu untuk mengirim form permintaan maintenance.');
         }
 
         try {
@@ -407,7 +407,7 @@ class NocFormController extends Controller
     {
         // Validasi autentikasi - redirect ke login jika belum login
         if (!Auth::check()) {
-            return redirect()->route('login')->with('error', 'Anda harus login terlebih dahulu untuk mengirim form keluhan.');
+            return redirect()->route('home')->with('error', 'Anda harus login terlebih dahulu untuk mengirim form keluhan.');
         }
 
         try {
@@ -583,7 +583,7 @@ class NocFormController extends Controller
     {
         // Validasi autentikasi - redirect ke login jika belum login
         if (!Auth::check()) {
-            return redirect()->route('login')->with('error', 'Anda harus login terlebih dahulu untuk mengirim form permintaan terminasi.');
+            return redirect()->route('home')->with('error', 'Anda harus login terlebih dahulu untuk mengirim form permintaan terminasi.');
         }
 
         try {

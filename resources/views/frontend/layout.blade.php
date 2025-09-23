@@ -47,6 +47,7 @@
   {{-- Modals --}}
   @include('frontend.login_modal')
   @include('frontend.register_modal')
+  @include('frontend.forgot_password_modal')
   {{-- @include('frontend.otp_verification_modal') --}}
 
   <!-- Scroll Top -->
@@ -73,13 +74,69 @@
 
   <!-- Custom Scripts -->
   <script>
-    // OTP Modal
-    function showOtpModal(email) {
-        const emailInput = document.getElementById('otp-email');
-        if (emailInput) emailInput.value = email;
-        const otpModal = new bootstrap.Modal(document.getElementById('otpVerificationModal'));
-        otpModal.show();
+    // Tambahkan script ini ke layout atau buat file terpisah
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize forgot password modal functionality
+    initializeForgotPasswordModal();
+    
+    // Re-initialize when Livewire updates the DOM
+    document.addEventListener('livewire:updated', function() {
+        initializeForgotPasswordModal();
+    });
+});
+
+function initializeForgotPasswordModal() {
+    // Check if Bootstrap is loaded
+    if (typeof bootstrap === 'undefined') {
+        console.warn('Bootstrap is not loaded yet. Retrying in 500ms...');
+        setTimeout(initializeForgotPasswordModal, 500);
+        return;
     }
+
+    // Check if modal element exists
+    const modalElement = document.getElementById('forgotPasswordModal');
+    if (!modalElement) {
+        console.warn('Forgot password modal element not found');
+        return;
+    }
+
+    // Initialize modal if not already done
+    let modal = bootstrap.Modal.getInstance(modalElement);
+    if (!modal) {
+        modal = new bootstrap.Modal(modalElement, {
+            backdrop: 'static',
+            keyboard: false
+        });
+        console.log('Forgot password modal initialized');
+    }
+
+    // Handle forgot password button clicks
+    const forgotPasswordButtons = document.querySelectorAll('[data-bs-target="#forgotPasswordModal"]');
+    forgotPasswordButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            // Close any open modals first
+            const openModals = document.querySelectorAll('.modal.show');
+            openModals.forEach(openModal => {
+                const bsModal = bootstrap.Modal.getInstance(openModal);
+                if (bsModal) bsModal.hide();
+            });
+
+            // Open forgot password modal after a short delay
+            setTimeout(() => {
+                if (modal) {
+                    modal.show();
+                    console.log('Forgot password modal opened');
+                }
+            }, 200);
+        });
+    });
+
+    console.log('Forgot password modal initialization completed');
+}
+
 
     document.addEventListener('livewire:initialized', () => {
         Livewire.on('otpModalRequested', (data) => showOtpModal(data.email));

@@ -1,35 +1,3 @@
-<!-- Login Modal -->
-<div class="modal fade" id="loginModal" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content p-4">
-      <div class="modal-header border-0">
-        <h5 class="modal-title">Login</h5>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        ></button>
-      </div>
-      <div class="modal-body">
-        @livewire('pages.auth.login')
-      </div>
-      <div class="modal-footer border-0 text-center">
-        <p class="w-100">
-          Belum punya akun?
-          <a
-            href="#"
-            data-bs-toggle="modal"
-            data-bs-target="#registerModal"
-            data-bs-dismiss="modal"
-            >Daftar</a
-          >
-        </p>
-      </div>
-    </div>
-  </div>
-</div>
-
 <!-- Forgot Password Modal -->
 <div class="modal fade" id="forgotPasswordModal" tabindex="-1" aria-labelledby="forgotPasswordModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
   <div class="modal-dialog modal-dialog-centered">
@@ -56,7 +24,7 @@
 </div>
 
 <script>
-// Forgot password modal initialization for login modal context
+// Clean and simple forgot password modal initialization
 document.addEventListener('DOMContentLoaded', function() {
     // Function to initialize forgot password buttons
     function initializeForgotPasswordButtons() {
@@ -74,7 +42,7 @@ document.addEventListener('DOMContentLoaded', function() {
             button.addEventListener('click', handleForgotPasswordClick);
         });
 
-        console.log(`Initialized ${buttons.length} forgot password button(s) in login modal`);
+        console.log(`Initialized ${buttons.length} forgot password button(s)`);
     }
 
     // Handle forgot password button click

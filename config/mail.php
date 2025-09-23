@@ -18,6 +18,17 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Development Mail Configuration
+    |--------------------------------------------------------------------------
+    |
+    | For development environments, we use the 'log' driver to avoid SMTP
+    | configuration issues. In production, you should configure proper
+    | SMTP settings or use services like Mailgun, SES, etc.
+    |
+    */
+
+    /*
+    |--------------------------------------------------------------------------
     | Mailer Configurations
     |--------------------------------------------------------------------------
     |
@@ -72,7 +83,7 @@ return [
 
         'log' => [
             'transport' => 'log',
-            'channel' => env('MAIL_LOG_CHANNEL'),
+            'channel' => env('MAIL_LOG_CHANNEL', 'default'),
         ],
 
         'array' => [

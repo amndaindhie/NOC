@@ -2,7 +2,7 @@
   <div class="container-fluid container-xl position-relative d-flex align-items-center justify-content-between">
 
     <a href="{{ route('home') }}" class="logo d-flex align-items-center">
-      <h1 class="sitename">NOC</h1>
+      <h1 class="sitename">NOC KITB</h1>
     </a>
 
     <nav id="navmenu" class="navmenu">
@@ -15,7 +15,7 @@
         </li>
 
         {{-- Dropdown Services --}}
-        <li class="dropdown {{ request()->routeIs('noc.instalasi.*') || request()->routeIs('noc.maintenance.*') || request()->routeIs('noc.keluhan.*') || request()->routeIs('noc.terminasi.*') ? 'active' : '' }}">
+        <li class="dropdown {{ request()->routeIs('noc.instalasi.') || request()->routeIs('noc.maintenance.') || request()->routeIs('noc.keluhan.') || request()->routeIs('noc.terminasi.') ? 'active' : '' }}">
           <a href="#">
             <span>Services</span>
             <i class="bi bi-chevron-down toggle-dropdown"></i>
@@ -40,10 +40,10 @@
           <a href="{{ route('frontend.tracking') }}" class="{{ request()->routeIs('frontend.tracking') ? 'active' : '' }}">Tracking Request</a>
         </li>
         <li>
-          <a href="{{ route('frontend.contact') }}" class="{{ request()->routeIs('frontend.contact') ? 'active' : '' }}">Contact</a>
+          <a href="{{ route('frontend.showpdf') }}" class="{{ request()->routeIs('frontend.showpdf') ? 'active' : '' }}">Regulations</a>
         </li>
         <li>
-          <a href="{{ route('frontend.showpdf') }}" class="{{ request()->routeIs('frontend.showpdf') ? 'active' : '' }}">Regulations</a>
+          <a href="{{ route('frontend.contact') }}" class="{{ request()->routeIs('frontend.contact') ? 'active' : '' }}">Contact</a>
         </li>
 
         @guest
@@ -95,8 +95,6 @@
 /* Dropdown parent tetap simpel */
 .navmenu .dropdown.active > a {
   color: #a9dcf8;
-  font-weight: 500;
+  font-weight:500;
 }
 </style>
-
-

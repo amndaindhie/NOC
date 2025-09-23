@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Cache;
 use App\Mail\EmailVerificationOtp;
+use App\Rules\AllowedEmailDomain;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
 
@@ -26,7 +27,7 @@ class RegisterController extends Controller
 
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users', new AllowedEmailDomain],
             'password' => 'required|string|min:8|confirmed',
         ]);
 

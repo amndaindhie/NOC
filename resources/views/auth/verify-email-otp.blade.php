@@ -27,7 +27,7 @@
 
     @if (!session('success') && !old('email'))
         <div class="mb-4 font-medium text-sm text-yellow-600">
-            {{ __('OTP email mungkin tidak terkirim. Silakan klik "Resend OTP" untuk mengirim ulang.') }}
+            {{ __('The OTP email may not have been sent. Please click "Resend OTP" to resend it.') }}
         </div>
     @endif
 
@@ -36,7 +36,7 @@
         <input type="hidden" name="email" value="{{ session('email') }}">
 
         <div>
-            <x-input-label for="otp" :value="__('OTP Code')" />
+            <x-input-label for="otp" :value="('OTP Code')" />
             <x-text-input id="otp" class="block mt-1 w-full" type="text" name="otp" required autofocus maxlength="6" pattern="\d{6}" />
             <x-input-error :messages="$errors->get('otp')" class="mt-2" />
         </div>

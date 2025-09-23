@@ -60,6 +60,8 @@
   @include('frontend.login_modal')
 
   @include('frontend.register_modal')
+  
+  @include('frontend.forgot_password_modal')
 
   {{-- @include('frontend.otp_verification_modal') --}}
 
@@ -163,6 +165,8 @@
         Livewire.on('otpModalRequested', (data) => {
             showOtpModal(data.email);
         });
+
+
     });
   </script>
 </body>
