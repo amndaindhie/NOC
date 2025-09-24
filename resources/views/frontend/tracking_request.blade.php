@@ -11,9 +11,9 @@
   <!-- Page Title -->
   <div class="page-title dark-background">
     <div class="container position-relative">
-      <h1>Lacak Tiket NOC</h1>
+      <h1>Tracking NOC Ticket</h1>
       <p>
-        Pantau status permintaan layanan Anda secara real-time dengan mudah dan cepat
+        Monitor the status of your service requests in real-time easily and quickly.
       </p>
     </div>
   </div>
@@ -37,7 +37,7 @@
     @if($errors->any())
       <div class="alert alert-danger alert-dismissible fade show" role="alert">
         <i class="bi bi-exclamation-triangle-fill me-2"></i>
-        <strong>Terjadi kesalahan:</strong>
+        <strong>There is an error:</strong>
         <ul class="mb-0 mt-2">
           @foreach($errors->all() as $error)
             <li>{{ $error }}</li>
@@ -50,10 +50,10 @@
     <div class="form-section">
       <!-- Search Section -->
       <div class="mb-3">
-        <label class="form-label">Masukkan Nomor Tiket</label>
+        <label class="form-label">Enter Ticket Number</label>
         <div class="input-group">
           <input type="text" id="ticketNumber" class="form-control" placeholder="Contoh: INS-5F2A1C3E atau MTN-ABC123" value="{{ request()->query('nomor_tiket', '') }}">
-          <button id="trackBtn" class="btn btn-primary">Lacak Tiket</button>
+          <button id="trackBtn" class="btn btn-primary">Search</button>
         </div>
       </div>
       <div id="error" class="alert alert-danger" style="display: none;"></div>
@@ -64,14 +64,14 @@
       <div class="spinner-border text-primary" role="status">
         <span class="visually-hidden">Loading...</span>
       </div>
-      <p>Mencari Tiket...</p>
+      <p>Searching for Tickets...</p>
     </div>
 
     <!-- Result Section -->
     <div id="resultCard" class="card" style="display: none;">
       <div class="card-header text-white" style="background-color: #1e4356;">
-        <h2 class="card-title mb-0">Detail Tiket</h2>
-        <p class="mb-0">Informasi lengkap status permintaan Anda</p>
+        <h2 class="card-title mb-0">Ticket Details</h2>
+        <p class="mb-0">Complete information on the status of your request</p>
       </div>
       <div class="card-body">
         <!-- Ticket Info -->
@@ -80,7 +80,7 @@
             <div class="card mb-3">
               <div class="card-body text-center">
                 <i class="bi bi-tag-fill fs-1 text-primary mb-2"></i>
-                <h5>Nomor Tiket</h5>
+                <h5>Ticket Number</h5>
                 <p id="ticketNumberDisplay" class="fw-bold">-</p>
               </div>
             </div>
@@ -89,7 +89,7 @@
             <div class="card mb-3">
               <div class="card-body text-center">
                 <i class="bi bi-check-circle-fill fs-1 text-success mb-2"></i>
-                <h5>Status Saat Ini</h5>
+                <h5>Current Status</h5>
                 <span id="statusBadge" class="badge fs-6"></span>
               </div>
             </div>
@@ -98,7 +98,7 @@
             <div class="card mb-3">
               <div class="card-body text-center">
                 <i class="bi bi-calendar-event fs-1 text-info mb-2"></i>
-                <h5>Tanggal Permintaan</h5>
+                <h5>Request Date</h5>
                 <p id="requestDate" class="fw-bold">-</p>
               </div>
             </div>
@@ -106,34 +106,34 @@
         </div>
 
         <!-- Timeline Section -->
-        <h3 class="mt-4">Riwayat Status</h3>
+        <h3 class="mt-4">Status History</h3>
         <div id="timelineContainer" class="list-group"></div>
         <div id="noTimeline" class="text-center text-muted" style="display: none;">
           <i class="bi bi-info-circle fs-1"></i>
-          <p>Belum Ada Riwayat</p>
+          <p>No History Yet</p>
         </div>
 
         <!-- Additional Info -->
         <div class="card mt-4">
           <div class="card-header">
-            <h4 class="mb-0">Informasi Tambahan</h4>
+            <h4 class="mb-0">Additional information</h4>
           </div>
           <div class="card-body">
             <div class="row">
               <div class="col-md-3">
-                <strong>Jenis Layanan</strong>
+                <strong>Type of Service</strong>
                 <p id="serviceType">-</p>
               </div>
               <div class="col-md-3">
-                <strong>Nomor Tenant</strong>
+                <strong>Tenant Number</strong>
                 <p id="tenantNumber">-</p>
               </div>
               <div class="col-md-3">
-                <strong>Nama Perusahaan</strong>
+                <strong>Company name</strong>
                 <p id="companyName">-</p>
               </div>
               <div class="col-md-3">
-                <strong>Kontak Person</strong>
+                <strong>Contact person</strong>
                 <p id="contactPerson">-</p>
               </div>
             </div>
