@@ -19,7 +19,7 @@
     <section class="pdf-section py-5">
         <div class="container">
             <div class="text-center mb-4">
-                <a href="{{ asset('assets/pdf/VARIASI BAHASA GEN.pdf') }}" class="btn btn-noc" target="_blank">
+                <a href="{{ asset('assets/pdf/REGULASI PENYAMBUNGAN FIBER OPTIK KITB KE TENANT MANUFACTURE.pdf') }}" class="btn btn-noc" target="_blank">
                     <i class="bi bi-box-arrow-down"></i> Download PDF
                 </a>
             </div>
