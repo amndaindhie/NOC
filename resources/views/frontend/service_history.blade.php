@@ -17,8 +17,8 @@
         <div class="mb-4">
             <i class="bx bx-history display-1 text-muted"></i>
         </div>
-        <h4 class="text-muted mb-3">Belum ada riwayat pelayanan</h4>
-        <p class="text-muted mb-4">Anda belum mengajukan permintaan layanan apapun.</p>
+        <h4 class="text-muted mb-3">No service history yet</h4>
+        <p class="text-muted mb-4">You have not submitted any service requests.</p>
         <p class="text-muted small">Debug: {{ isset($tickets) ? 'Tickets variable exists' : 'Tickets variable not set' }}</p>
         @if(isset($tickets))
             <p class="text-muted small">Debug: Tickets count = {{ $tickets->count() }}</p>

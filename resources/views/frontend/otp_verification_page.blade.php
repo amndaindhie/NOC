@@ -21,8 +21,8 @@
                 <input type="hidden" name="email" id="otp-email" value="{{ old('email', request('email')) }}">
                 <input type="hidden" name="otp" id="otp-code">
 
-                <span class="mainHeading">Masukkan OTP</span>
-                <p class="otpSubheading">Kode OTP telah dikirim ke email Anda</p>
+                <span class="mainHeading">Enter OTP</span>
+                <p class="otpSubheading">OTP code has been sent to your email</p>
 
                 <div class="inputContainer">
                     <input maxlength="1" type="text" class="otp-input" id="otp-input1" autofocus required>
@@ -33,12 +33,12 @@
                     <input maxlength="1" type="text" class="otp-input" id="otp-input6" required>
                 </div>
 
-                <button class="verifyButton" type="submit" id="verify-btn">Verifikasi</button>
+                <button class="verifyButton" type="submit" id="verify-btn">Verify</button>
                 <button class="exitBtn" type="button" onclick="window.location.href='{{ route('home') }}'">×</button>
 
                 <p class="resendNote">
-                    Tidak menerima kode?
-                    <button class="resendBtn" type="button" id="resend-btn">Kirim Ulang</button>
+                    Didn't get the code?
+                    <button class="resendBtn" type="button" id="resend-btn">Resend</button>
                 </p>
             </form>
 

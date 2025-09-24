@@ -11,10 +11,10 @@ $hide_navbar = true;
 <div class="main-content">
     <div class="card shadow-sm border-0">
         <div class="card-header d-flex flex-wrap justify-content-between align-items-center bg-white border-0">
-            <h2 class="card-title mb-0">📋 Detail Tiket Pelayanan</h2>
+            <h2 class="card-title mb-0">📋 Service Ticket Details</h2>
             <div class="mt-2 mt-sm-0">
                 <a href="{{ route('service.history') }}" class="btn btn-outline-secondary">
-                    <i class="bx bx-arrow-back me-1"></i> Kembali ke Riwayat
+                    <i class="bx bx-arrow-back me-1"></i> Back to History
                 </a>
             </div>
         </div>
@@ -44,11 +44,11 @@ $hide_navbar = true;
 
                                 <div class="row">
                                     <div class="col-sm-6">
-                                        <small class="text-muted d-block">Tanggal Permintaan</small>
+                                        <small class="text-muted d-block">Request Date</small>
                                         <p class="mb-2">{{ $ticket['tanggal_permintaan'] ?? '-' }}</p>
                                     </div>
                                     <div class="col-sm-6">
-                                        <small class="text-muted d-block">Nama Perusahaan/Tenant</small>
+                                        <small class="text-muted d-block">Company/Tenant Name</small>
                                         <p class="mb-2">{{ $ticket['nama_perusahaan'] ?? $ticket['nama_tenant'] ?? '-' }}</p>
                                     </div>
                                 </div>
@@ -84,35 +84,35 @@ $hide_navbar = true;
                     <div class="col-md-4">
                         <div class="card border-0">
                             <div class="card-header bg-white">
-                                <h6 class="mb-0">Detail Informasi</h6>
+                                <h6 class="mb-0">Information Details</h6>
                             </div>
                             <div class="card-body">
                                 @if(isset($ticket['data']) && !empty($ticket['data']))
                                     @if($ticket['tipe'] == 'instalasi')
                                         <div class="mb-3">
-                                            <small class="text-muted d-block">Lokasi Instalasi</small>
+                                            <small class="text-muted d-block">Installation Location</small>
                                             <p class="mb-1">{{ $ticket['data']['lokasi_instalasi'] ?? '-' }}</p>
                                         </div>
                                         <div class="mb-3">
-                                            <small class="text-muted d-block">Jenis Layanan</small>
+                                            <small class="text-muted d-block">Type of Service</small>
                                             <p class="mb-1">{{ $ticket['data']['jenis_layanan'] ?? '-' }}</p>
                                         </div>
                                     @elseif($ticket['tipe'] == 'maintenance')
                                         <div class="mb-3">
-                                            <small class="text-muted d-block">Jenis Gangguan</small>
+                                            <small class="text-muted d-block">Types of Problem</small>
                                             <p class="mb-1">{{ $ticket['data']['jenis_gangguan'] ?? '-' }}</p>
                                         </div>
                                         <div class="mb-3">
-                                            <small class="text-muted d-block">Urgensi</small>
+                                            <small class="text-muted d-block">Urgency</small>
                                             <p class="mb-1">{{ $ticket['data']['urgensi'] ?? '-' }}</p>
                                         </div>
                                     @elseif($ticket['tipe'] == 'keluhan')
                                         <div class="mb-3">
-                                            <small class="text-muted d-block">Jenis Keluhan</small>
+                                            <small class="text-muted d-block">Type of Complaint</small>
                                             <p class="mb-1">{{ $ticket['data']['jenis_keluhan'] ?? '-' }}</p>
                                         </div>
                                         <div class="mb-3">
-                                            <small class="text-muted d-block">Tingkat Urgensi</small>
+                                            <small class="text-muted d-block">Urgency Level</small>
                                             <p class="mb-1">
                                                 <span class="badge
                                                     @if(($ticket['data']['tingkat_urgensi'] ?? '') == 'Low') bg-success
@@ -126,21 +126,21 @@ $hide_navbar = true;
                                             </p>
                                         </div>
                                         <div class="mb-3">
-                                            <small class="text-muted d-block">Deskripsi</small>
+                                            <small class="text-muted d-block">description</small>
                                             <p class="mb-1">{{ $ticket['data']['deskripsi_keluhan'] ?? '-' }}</p>
                                         </div>
                                     @elseif($ticket['tipe'] == 'terminasi')
                                         <div class="mb-3">
-                                            <small class="text-muted d-block">Alasan Terminasi</small>
+                                            <small class="text-muted d-block">Reason for Termination</small>
                                             <p class="mb-1">{{ $ticket['data']['alasan_terminasi'] ?? '-' }}</p>
                                         </div>
                                         <div class="mb-3">
-                                            <small class="text-muted d-block">Tanggal Terminasi</small>
+                                            <small class="text-muted d-block">Termination Date</small>
                                             <p class="mb-1">{{ $ticket['data']['tanggal_terminasi'] ?? '-' }}</p>
                                         </div>
                                     @endif
                                 @else
-                                    <p class="text-muted">Detail tambahan tidak tersedia</p>
+                                    <p class="text-muted">Additional details not available</p>
                                 @endif
                             </div>
                         </div>
@@ -151,10 +151,10 @@ $hide_navbar = true;
                     <div class="mb-4">
                         <i class="bx bx-error display-1 text-muted"></i>
                     </div>
-                    <h4 class="text-muted mb-3">Detail Tiket Tidak Ditemukan</h4>
-                    <p class="text-muted mb-4">Tidak ada informasi detail untuk tiket ini.</p>
+                    <h4 class="text-muted mb-3">Ticket Details Not Found</h4>
+                    <p class="text-muted mb-4">There is no detailed information for this ticket.</p>
                     <a href="{{ route('service.history') }}" class="btn btn-primary">
-                        <i class="bx bx-arrow-back me-1"></i> Kembali ke Riwayat
+                        <i class="bx bx-arrow-back me-1"></i> Back to History
                     </a>
                 </div>
             @endif
