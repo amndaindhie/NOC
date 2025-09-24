@@ -24,7 +24,7 @@
                 </a>
             </div>
             <div class="pdf-container shadow rounded">
-                <iframe src="{{ asset('assets/pdf/VARIASI BAHASA GEN.pdf') }}" width="100%" height="700px"
+                <iframe src="{{ asset('assets/pdf/REGULASI PENYAMBUNGAN FIBER OPTIK KITB KE TENANT MANUFACTURE.pdf') }}" width="100%" height="700px"
                     style="border: none; border-radius: 10px">
                 </iframe>
             </div>
