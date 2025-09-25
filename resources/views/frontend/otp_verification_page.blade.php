@@ -21,7 +21,11 @@
                 <input type="hidden" name="otp" id="otp-code">
 
                 <span class="mainHeading">Enter OTP</span>
+<<<<<<< HEAD
                 <p class="otpSubheading">The OTP code has been sent to your email</p>
+=======
+                <p class="otpSubheading">OTP code has been sent to your email</p>
+>>>>>>> 595c46e4626f43ce5709792db4ee7794eb4aa9b6
 
                 <div class="inputContainer">
                     <input maxlength="1" type="text" class="otp-input" id="otp-input1" autofocus required>
@@ -36,7 +40,11 @@
                 <button class="exitBtn" type="button" onclick="window.location.href='{{ route('home') }}'">×</button>
 
                 <p class="resendNote">
+<<<<<<< HEAD
                     Didn't receive the code?
+=======
+                    Didn't get the code?
+>>>>>>> 595c46e4626f43ce5709792db4ee7794eb4aa9b6
                     <button class="resendBtn" type="button" id="resend-btn">Resend</button>
                 </p>
             </form>

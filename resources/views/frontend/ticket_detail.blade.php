@@ -84,13 +84,21 @@ $hide_navbar = true;
                     <div class="col-md-4">
                         <div class="card border-0">
                             <div class="card-header bg-white">
+<<<<<<< HEAD
                                 <h6 class="mb-0">Detail Information</h6>
+=======
+                                <h6 class="mb-0">Information Details</h6>
+>>>>>>> 595c46e4626f43ce5709792db4ee7794eb4aa9b6
                             </div>
                             <div class="card-body">
                                 @if(isset($ticket['data']) && !empty($ticket['data']))
                                     @if($ticket['tipe'] == 'instalasi')
                                         <div class="mb-3">
+<<<<<<< HEAD
                                             <small class="text-muted d-block">Location Installatio</small>
+=======
+                                            <small class="text-muted d-block">Installation Location</small>
+>>>>>>> 595c46e4626f43ce5709792db4ee7794eb4aa9b6
                                             <p class="mb-1">{{ $ticket['data']['lokasi_instalasi'] ?? '-' }}</p>
                                         </div>
                                         <div class="mb-3">
@@ -99,7 +107,7 @@ $hide_navbar = true;
                                         </div>
                                     @elseif($ticket['tipe'] == 'maintenance')
                                         <div class="mb-3">
-                                            <small class="text-muted d-block">Jenis Gangguan</small>
+                                            <small class="text-muted d-block">Types of Problem</small>
                                             <p class="mb-1">{{ $ticket['data']['jenis_gangguan'] ?? '-' }}</p>
                                         </div>
                                         <div class="mb-3">
@@ -126,7 +134,11 @@ $hide_navbar = true;
                                             </p>
                                         </div>
                                         <div class="mb-3">
+<<<<<<< HEAD
                                             <small class="text-muted d-block">Description</small>
+=======
+                                            <small class="text-muted d-block">description</small>
+>>>>>>> 595c46e4626f43ce5709792db4ee7794eb4aa9b6
                                             <p class="mb-1">{{ $ticket['data']['deskripsi_keluhan'] ?? '-' }}</p>
                                         </div>
                                     @elseif($ticket['tipe'] == 'terminasi')

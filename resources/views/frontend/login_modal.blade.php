@@ -16,13 +16,13 @@
       </div>
       <div class="modal-footer border-0 text-center">
         <p class="w-100">
-          Belum punya akun?
+          Don't have an account yet?
           <a
             href="#"
             data-bs-toggle="modal"
             data-bs-target="#registerModal"
             data-bs-dismiss="modal"
-            >Daftar</a
+            >Register</a
           >
         </p>
       </div>
@@ -48,7 +48,7 @@
       <div class="modal-footer border-0 justify-content-center">
         <small class="text-muted">
             <i class="bi bi-info-circle me-1"></i>
-            Tidak menerima email? Periksa folder spam atau coba lagi dalam beberapa menit.
+            Didn't receive the email? Check your spam folder or try again in a few minutes.
         </small>
       </div>
     </div>
