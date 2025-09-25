@@ -1,6 +1,5 @@
 <div class="sidebar">
     <div class="logo-details">
-        <i class='bx bxl-c-plus-plus icon'></i>
         <div class="logo_name">NOC KITB</div>
         <i class='bx bx-menu' id="btn"></i>
     </div>
@@ -17,17 +16,9 @@
         <li>
             <a href="{{ route('settings.service-history') }}">
                 <i class='bx bx-history'></i>
-                <span class="links_name">Riwayat Pelayanan</span>
+                <span class="links_name">Service History</span>
             </a>
-            <span class="tooltip">Riwayat Pelayanan</span>
-        </li>
-
-        <li> 
-            <a href="{{ route('settings.settings') }}">
-                <i class='bx bx-cog'></i>
-                <span class="links_name">Settings</span>
-            </a>
-            <span class="tooltip">Settings</span>
+            <span class="tooltip">Service History</span>
         </li>
 
         <!-- Tombol Home di bawah semua menu -->
@@ -271,6 +262,33 @@
   width: 50px;
   background: none;
 }
+
+/* === SEMUA MENU SAAT SIDEBAR TERTUTUP === */
+.sidebar:not(.open) li a {
+  display: flex;
+  justify-content: center;   /* center horizontal (kanan-kiri) */
+  align-items: center;       /* center vertical */
+  padding: 0;                /* rapihin biar icon pas di tengah */
+}
+
+/* Sembunyikan teks menu saat sidebar tertutup */
+.sidebar:not(.open) li a .links_name {
+  display: none;
+}
+
+/* HOME button styling tetap ada warna khusus */
+.sidebar li.home-button a {
+  background: #285c73;
+  color: #fff;
+  font-weight: 500;
+  border-radius: 8px;
+  transition: background 0.3s ease;
+  justify-content: center; /* center saat kecil maupun besar */
+}
+.sidebar li.home-button a:hover {
+  background: #327491;
+}
+
 
 @media (max-width: 420px) {
   .sidebar li .tooltip{

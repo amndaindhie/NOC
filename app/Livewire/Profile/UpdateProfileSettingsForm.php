@@ -2,7 +2,6 @@
 
 namespace App\Livewire\Profile;
 
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
@@ -18,9 +17,9 @@ class UpdateProfileSettingsForm extends Component
     public string $password = '';
     public string $password_confirmation = '';
 
-    /**
-     * Mount the component.
-     */
+    public ?string $message = null; // Pesan sukses / info
+    public ?string $errorMessage = null; // Pesan error
+
     public function mount(): void
     {
         $user = Auth::user();
@@ -31,73 +30,75 @@ class UpdateProfileSettingsForm extends Component
         }
     }
 
-    /**
-     * Update the profile settings for the currently authenticated user.
-     */
     public function updateProfileSettings(): void
     {
+        $this->message = null;
+        $this->errorMessage = null;
+
         $user = Auth::user();
 
         try {
-            // Validate profile information
+            // Validasi profil
             $profileValidated = $this->validate([
                 'name' => ['required', 'string', 'max:255'],
                 'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
-            ], [
-                'name.required' => 'Name is required.',
-                'email.required' => 'Email is required.',
-                'email.email' => 'Please enter a valid email address.',
-                'email.unique' => 'This email is already taken.',
             ]);
 
-            // Validate password if provided
-            $passwordValidated = [];
-            if (!empty($this->current_password) || !empty($this->password) || !empty($this->password_confirmation)) {
+            $changes = [];
+
+            // Cek perubahan name/email
+            if ($user->name !== $profileValidated['name']) {
+                $changes['name'] = $profileValidated['name'];
+            }
+            if ($user->email !== $profileValidated['email']) {
+                $changes['email'] = $profileValidated['email'];
+            }
+
+            // Validasi password jika diisi
+            if ($this->current_password || $this->password || $this->password_confirmation) {
                 $passwordValidated = $this->validate([
                     'current_password' => ['required', 'string'],
                     'password' => ['required', 'string', Rules\Password::defaults(), 'confirmed'],
-                ], [
-                    'current_password.required' => 'Current password is required.',
-                    'password.required' => 'New password is required.',
-                    'password.confirmed' => 'Password confirmation does not match.',
                 ]);
 
-                // Verify current password
+                // Verifikasi current password
                 if (!Hash::check($passwordValidated['current_password'], $user->password)) {
                     throw ValidationException::withMessages([
                         'current_password' => ['The current password is incorrect.'],
                     ]);
                 }
+
+                $changes['password'] = Hash::make($passwordValidated['password']);
             }
 
-            // Check if email has changed
-            $emailChanged = $user->email !== $this->email;
-
-            // Update profile information
-            $user->update([
-                'name' => $profileValidated['name'],
-                'email' => $profileValidated['email'],
-            ]);
-
-            // Update password if provided
-            if (!empty($passwordValidated)) {
-                $user->update([
-                    'password' => Hash::make($passwordValidated['password']),
-                    'password_length' => strlen($passwordValidated['password']),
-                ]);
+            // Jika tidak ada perubahan
+            if (empty($changes)) {
+                $this->message = 'No changes were made.';
+                return;
             }
 
-            // Handle email verification
+            // Simpan perubahan
+            $emailChanged = isset($changes['email']) && $user->email !== $changes['email'];
+
+            $user->update($changes);
+
+            // Handle verifikasi email jika email berubah
             if ($emailChanged && $user->hasVerifiedEmail()) {
-                $user->update(['email_verified_at' => null]);
+                $user->email_verified_at = null;
+                $user->save();
                 $user->sendEmailVerificationNotification();
-
-                session()->flash('status', 'Profile updated successfully. Please check your email to verify your new email address.');
+                $this->message = 'Profile updated successfully. Please check your email to verify your new email address.';
             } else {
-                session()->flash('status', 'Profile updated successfully.');
+                $this->message = 'Profile updated successfully.';
             }
+
+            // Kosongkan password fields
+            $this->current_password = '';
+            $this->password = '';
+            $this->password_confirmation = '';
+
         } catch (\Exception $e) {
-            session()->flash('error', 'Something went wrong: ' . $e->getMessage());
+            $this->errorMessage = $e->getMessage();
         }
     }
 

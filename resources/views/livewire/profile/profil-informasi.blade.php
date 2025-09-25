@@ -306,6 +306,12 @@ new class extends Component
                 <small style="color: #666; font-size: 12px;">{{ __('Password is hidden for security') }}</small>
             </div>
 
+            <div style="margin-top: 24px;">
+                <a href="{{ route('settings.settings') }}" class="btn-link">
+                    {{ __('Edit Profile') }}
+                </a>
+            </div>
+
         @endif
 
         @if (session()->has('status'))

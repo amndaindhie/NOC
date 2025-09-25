@@ -22,10 +22,10 @@
                     <div class="card-header bg-white d-flex justify-content-between align-items-center py-3 px-4 border-0">
                         <h4 class="fw-bold mb-0 d-flex align-items-center">
                             <i class="bx bx-history text-primary fs-4 me-2"></i>
-                            Riwayat Pelayanan
+                            Service History
                         </h4>
                         <a href="{{ route('noc.instalasi.form') }}" class="btn btn-gradient rounded-pill px-4 shadow-sm">
-                            <i class="bx bx-plus me-1"></i> Ajukan Baru
+                            <i class="bx bx-plus me-1"></i> Submit New Request
                         </a>
                     </div>
 
@@ -38,11 +38,11 @@
                                         {{-- Header --}}
                                         <div class="ticket-header d-flex justify-content-between align-items-center">
                                             <span class="ticket-number" data-ticket="{{ $ticket['nomor_tiket'] }}"
-                                                title="Klik untuk menyalin">
+                                                title="Click to copy">
                                                 🎫 {{ $ticket['nomor_tiket'] }}
                                             </span>
                                             <button class="btn btn-sm btn-light copy-btn rounded-circle shadow-sm"
-                                                data-copy-target="ticket-{{ $loop->index }}" title="Salin nomor tiket">
+                                                data-copy-target="ticket-{{ $loop->index }}" title="copy ticket number">
                                                 <i class="bx bx-copy"></i>
                                             </button>
                                         </div>
@@ -89,10 +89,10 @@
                         <div class="empty-icon mb-3">
                             <i class="bx bx-history display-1 text-muted"></i>
                         </div>
-                        <h4 class="fw-bold text-dark">Belum ada riwayat pelayanan</h4>
-                        <p class="text-muted mb-4">Anda belum mengajukan permintaan layanan apapun.</p>
+                        <h4 class="fw-bold text-dark">No service history available.</h4>
+                        <p class="text-muted mb-4">You have not submitted any service requests.</p>
                         <a href="{{ route('noc.instalasi.form') }}" class="btn btn-gradient rounded-pill px-4 shadow-sm">
-                            <i class="bx bx-plus me-1"></i> Ajukan Permintaan Baru
+                            <i class="bx bx-plus me-1"></i> Submit a New Request
                         </a>
                     </div>
                 </div>
