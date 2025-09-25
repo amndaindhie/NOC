@@ -16,7 +16,7 @@
       <div class="modal-footer border-0 justify-content-center">
         <small class="text-muted">
             <i class="bi bi-info-circle me-1"></i>
-            Tidak menerima email? Periksa folder spam atau coba lagi dalam beberapa menit.
+            Didn't receive the email? Check your spam folder or try again in a few minutes.
         </small>
       </div>
     </div>

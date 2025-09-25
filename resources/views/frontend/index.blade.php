@@ -91,7 +91,7 @@
           data-aos="fade-up"
           data-aos-delay="100"
         >
-          <img src="{{ asset('assets/img/noc.jpg') }}" class="img-fluid" alt="" />
+          <img src="{{ asset(''assets/img/fasilitas/noc2.jpg'') }}" class="img-fluid" alt="" />
         </div>
         <div
           class="col-lg-6 content"
