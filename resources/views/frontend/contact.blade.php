@@ -71,7 +71,7 @@
         <!-- Kolom Kanan: Map -->
         <div class="col-lg-6" data-aos="fade-up" data-aos-delay="200">
           <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3960.737614346236!2d109.93282991082431!3d-6.921937667722151!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e703f3dd6c20939%3A0x4d4a0fc9996dc09!2sGRAND%20BATANG%20CITY!5e0!3m2!1sen!2sid!4v1756693747427!5m2!1sen!2sid"
+            src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3960.386625087646!2d110.0015715749969!3d-6.96363569303688!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zNsKwNTcnNDkuMSJTIDExMMKwMDAnMTQuOSJF!5e0!3m2!1sen!2sid!4v1758597099474!5m2!1sen!2sid"
             style="border: 0; width: 100%; height: 400px"
             allowfullscreen=""
             loading="lazy"
@@ -81,5 +81,5 @@
       </div>
     </div>
   </section>
-  <!-- /Contact Section -->
+  <!-- /Contact Section -->
 @endsection

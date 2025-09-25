@@ -128,7 +128,7 @@ new #[Layout('layouts.guest')] class extends Component {
             $this->reset(['name', 'email', 'password', 'password_confirmation']);
 
             // Show success message
-            $this->successMessage = 'Registrasi berhasil! Kode OTP telah dikirim ke email Anda.';
+            $this->successMessage = 'Registration successful! The OTP code has been sent to your email.';
 
             // Redirect to OTP verification page after showing message
             $this->dispatch('redirectToOtp', email: $validated['email']);
@@ -136,7 +136,7 @@ new #[Layout('layouts.guest')] class extends Component {
         } catch (\Exception $e) {
             Log::error('Registration failed for email: ' . $validated['email'] . ', Error: ' . $e->getMessage());
 
-            $this->addError('email', 'Terjadi kesalahan saat proses registrasi. Silakan coba lagi.');
+            $this->addError('email', 'An error occurred during the registration process. Please try again.');
         } finally {
             $this->isLoading = false;
         }

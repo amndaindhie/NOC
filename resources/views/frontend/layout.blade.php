@@ -29,6 +29,9 @@
 
   <!-- Main CSS File -->
   <link href="{{ asset('assets/css/main.css') }}" rel="stylesheet" />
+
+  <!-- Livewire Styles -->
+  @livewireStyles
 </head>
 
 <body class="@yield('body_class', 'index-page')">
@@ -196,5 +199,8 @@ function initializeForgotPasswordModal() {
         return true;
     }
   </script>
+
+  <!-- Livewire Scripts -->
+  @livewireScripts
 </body>
 </html>

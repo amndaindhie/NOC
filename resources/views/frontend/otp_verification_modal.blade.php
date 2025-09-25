@@ -3,7 +3,7 @@
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content p-4">
       <div class="modal-header border-0">
-        <h5 class="modal-title">Verifikasi Email</h5>
+        <h5 class="modal-title">Email Verification</h5>
         <button
           type="button"
           class="btn-close"
@@ -20,13 +20,13 @@
 
           <!-- OTP Input -->
           <div class="mb-3">
-            <label class="form-label">Kode OTP</label>
+            <label class="form-label">OTP Code</label>
             <input
               type="text"
               class="form-control @error('otp') is-invalid @enderror"
               name="otp"
               id="otp-code"
-              placeholder="Masukkan 6 digit kode OTP"
+              placeholder="Enter 6-digit OTP code"
               maxlength="6"
               pattern="\d{6}"
               required
@@ -36,13 +36,13 @@
               <div class="invalid-feedback">{{ $message }}</div>
             @enderror
             <div class="form-text">
-              Kode OTP telah dikirim ke email Anda. Kode berlaku selama 60 menit.
+              The OTP has been sent to your email. The code is valid for 60 minutes.
             </div>
           </div>
 
           <!-- Verify Button -->
           <button type="submit" class="btn btn-noc w-100 rounded-pill" id="verify-btn">
-            Verifikasi Email
+            Verify Email
           </button>
         </form>
 
@@ -52,7 +52,7 @@
             @csrf
             <input type="hidden" name="email" id="resend-email" value="{{ old('email', request('email')) }}">
             <button type="submit" class="btn btn-link text-decoration-none" id="resend-btn">
-              Kirim Ulang OTP
+              Resend OTP
             </button>
           </form>
         </div>
@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
       const formData = new FormData(otpForm);
       verifyBtn.disabled = true;
-      verifyBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Memverifikasi...';
+      verifyBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Verifying...';
 
       fetch(otpForm.action, {
         method: 'POST',
@@ -90,20 +90,20 @@ document.addEventListener('DOMContentLoaded', function() {
       .then(response => response.json())
       .then(data => {
         if (data.success) {
-          otpMessage.innerHTML = '<div class="alert alert-success">Verifikasi berhasil! Mengalihkan ke dashboard...</div>';
+          otpMessage.innerHTML = '<div class="alert alert-success">Verification successful! Redirecting to dashboard...</div>';
           setTimeout(() => {
             window.location.href = data.redirect || '{{ route("dashboard") }}';
           }, 2000);
         } else {
-          otpMessage.innerHTML = '<div class="alert alert-danger">' + (data.message || 'Verifikasi gagal') + '</div>';
+          otpMessage.innerHTML = '<div class="alert alert-danger">' + (data.message || 'Verification failed') + '</div>';
         }
       })
       .catch(error => {
-        otpMessage.innerHTML = '<div class="alert alert-danger">Terjadi kesalahan. Silakan coba lagi.</div>';
+        otpMessage.innerHTML = '<div class="alert alert-danger">An error occurred. Please try again.</div>';
       })
       .finally(() => {
         verifyBtn.disabled = false;
-        verifyBtn.innerHTML = 'Verifikasi Email';
+        verifyBtn.innerHTML = 'Verify Email';
       });
     });
   }
@@ -115,7 +115,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
       const formData = new FormData(resendForm);
       resendBtn.disabled = true;
-      resendBtn.innerHTML = 'Mengirim...';
+      resendBtn.innerHTML = 'Sending...';
 
       fetch(resendForm.action, {
         method: 'POST',
@@ -129,17 +129,17 @@ document.addEventListener('DOMContentLoaded', function() {
       .then(response => response.json())
       .then(data => {
         if (data.success) {
-          otpMessage.innerHTML = '<div class="alert alert-success">OTP baru telah dikirim ke email Anda.</div>';
+          otpMessage.innerHTML = '<div class="alert alert-success">A new OTP has been sent to your email.</div>';
         } else {
-          otpMessage.innerHTML = '<div class="alert alert-danger">' + (data.message || 'Gagal mengirim OTP') + '</div>';
+          otpMessage.innerHTML = '<div class="alert alert-danger">' + (data.message || 'Failed to send OTP') + '</div>';
         }
       })
       .catch(error => {
-        otpMessage.innerHTML = '<div class="alert alert-danger">Terjadi kesalahan. Silakan coba lagi.</div>';
+        otpMessage.innerHTML = '<div class="alert alert-danger">An error occurred. Please try again.</div>';
       })
       .finally(() => {
         resendBtn.disabled = false;
-        resendBtn.innerHTML = 'Kirim Ulang OTP';
+        resendBtn.innerHTML = 'Resend OTP';
       });
     });
   }

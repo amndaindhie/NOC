@@ -32,30 +32,29 @@ class EmailVerificationController extends Controller
         try {
             Log::info('Checking verification record', ['email' => $request->email]);
 
-            // Cari OTP berdasarkan email + kode OTP
+            // Find OTP by email + code
             $verification = EmailVerification::where('email', $request->email)
                 ->where('otp', $request->otp)
                 ->where('is_used', false)
                 ->first();
 
             if (!$verification) {
-                // OTP tidak ditemukan / salah
-                $message = 'Kode OTP tidak valid.';
+                // OTP not found / invalid
+                $message = 'Invalid OTP code.';
                 if ($request->expectsJson() || $request->ajax()) {
                     return response()->json(['success' => false, 'message' => $message], 422);
                 }
                 return back()->withErrors(['otp' => $message])->withInput();
             }
 
-            // OTP ketemu, tapi sudah kadaluarsa
+            // OTP found, but expired
             if ($verification->expires_at <= now()) {
-                $message = 'Kode OTP sudah kadaluarsa.';
+                $message = 'OTP code has expired.';
                 if ($request->expectsJson() || $request->ajax()) {
                     return response()->json(['success' => false, 'message' => $message], 422);
                 }
                 return back()->withErrors(['otp' => $message])->withInput();
             }
-
 
             Log::info('OTP verification found', ['verification_id' => $verification->id, 'registration_id' => $verification->registration_id]);
 
@@ -68,11 +67,11 @@ class EmailVerificationController extends Controller
                 if ($request->expectsJson() || $request->ajax()) {
                     return response()->json([
                         'success' => false,
-                        'message' => 'Data registrasi sudah kadaluarsa. Silakan daftar ulang.'
+                        'message' => 'Registration data has expired. Please register again.'
                     ], 422);
                 }
 
-                return back()->withErrors(['otp' => 'Data registrasi sudah kadaluarsa. Silakan daftar ulang.'])->withInput();
+                return back()->withErrors(['otp' => 'Registration data has expired. Please register again.'])->withInput();
             }
 
             Log::info('Registration data found in cache', ['email' => $registrationData['email']]);
@@ -82,6 +81,7 @@ class EmailVerificationController extends Controller
                 'name' => $registrationData['name'],
                 'email' => $registrationData['email'],
                 'password' => $registrationData['password'],
+                'password_length' => $registrationData['password_length'] ?? null,
                 'email_verified_at' => now(),
             ]);
 
@@ -105,13 +105,13 @@ class EmailVerificationController extends Controller
             if ($request->expectsJson() || $request->ajax()) {
                 return response()->json([
                     'success' => true,
-                    'message' => 'Verifikasi berhasil! Registrasi selesai.',
+                    'message' => 'Verification successful! Registration completed.',
                     'redirect' => route('home')
                 ]);
             }
 
             return redirect()->route('home')
-                ->with('success', 'Registrasi berhasil! Selamat datang di sistem NOC.');
+                ->with('success', 'Registration successful! Welcome to the NOC system.');
         } catch (\Exception $e) {
             Log::error('OTP verification failed with error: ' . $e->getMessage(), [
                 'email' => $request->email,
@@ -122,11 +122,11 @@ class EmailVerificationController extends Controller
             if ($request->expectsJson() || $request->ajax()) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Terjadi kesalahan saat verifikasi. Silakan coba lagi.'
+                    'message' => 'An error occurred during verification. Please try again.'
                 ], 500);
             }
 
-            return back()->withErrors(['otp' => 'Terjadi kesalahan saat verifikasi. Silakan coba lagi.'])->withInput();
+            return back()->withErrors(['otp' => 'An error occurred during verification. Please try again.'])->withInput();
         }
     }
 
@@ -153,11 +153,11 @@ class EmailVerificationController extends Controller
                 if ($request->expectsJson() || $request->ajax()) {
                     return response()->json([
                         'success' => false,
-                        'message' => 'Tidak ada verifikasi tertunda untuk email ini.'
+                        'message' => 'No pending verification found for this email.'
                     ], 422);
                 }
 
-                return back()->withErrors(['email' => 'Tidak ada verifikasi tertunda untuk email ini.'])->withInput();
+                return back()->withErrors(['email' => 'No pending verification found for this email.'])->withInput();
             }
 
             Log::info('Found verification record for resend', ['verification_id' => $verification->id, 'registration_id' => $verification->registration_id]);
@@ -178,11 +178,11 @@ class EmailVerificationController extends Controller
                 if ($request->expectsJson() || $request->ajax()) {
                     return response()->json([
                         'success' => false,
-                        'message' => 'Data registrasi sudah kadaluarsa. Silakan daftar ulang.'
+                        'message' => 'Registration data has expired. Please register again.'
                     ], 422);
                 }
 
-                return back()->withErrors(['email' => 'Data registrasi sudah kadaluarsa. Silakan daftar ulang.'])->withInput();
+                return back()->withErrors(['email' => 'Registration data has expired. Please register again.'])->withInput();
             }
 
             Log::info('Registration data found in cache for resend', ['email' => $email]);
@@ -210,11 +210,11 @@ class EmailVerificationController extends Controller
                 if ($request->expectsJson() || $request->ajax()) {
                     return response()->json([
                         'success' => true,
-                        'message' => 'OTP baru telah dikirim ke email Anda.'
+                        'message' => 'A new OTP has been sent to your email.'
                     ]);
                 }
 
-                return back()->with('status', 'OTP baru telah dikirim ke email Anda.')
+                return back()->with('status', 'A new OTP has been sent to your email.')
                     ->with('success', true);
             } catch (\Exception $e) {
                 Log::error('Failed to send resend OTP email: ' . $e->getMessage(), ['email' => $email]);
@@ -222,11 +222,11 @@ class EmailVerificationController extends Controller
                 if ($request->expectsJson() || $request->ajax()) {
                     return response()->json([
                         'success' => false,
-                        'message' => 'Gagal mengirim OTP. Silakan coba lagi.'
+                        'message' => 'Failed to send OTP. Please try again.'
                     ], 500);
                 }
 
-                return back()->with('status', 'Gagal mengirim OTP. Silakan coba lagi.')
+                return back()->with('status', 'Failed to send OTP. Please try again.')
                     ->with('error', true);
             }
         } catch (\Exception $e) {
@@ -238,11 +238,11 @@ class EmailVerificationController extends Controller
             if ($request->expectsJson() || $request->ajax()) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Terjadi kesalahan saat mengirim ulang OTP. Silakan coba lagi.'
+                    'message' => 'An error occurred while resending OTP. Please try again.'
                 ], 500);
             }
 
-            return back()->withErrors(['email' => 'Terjadi kesalahan saat mengirim ulang OTP. Silakan coba lagi.'])->withInput();
+            return back()->withErrors(['email' => 'An error occurred while resending OTP. Please try again.'])->withInput();
         }
     }
 }
