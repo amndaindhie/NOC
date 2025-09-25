@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Auth;
 
 use App\Livewire\Admin\Dashboard;
 use App\Http\Controllers\Admin\NocAdminController;
@@ -21,7 +22,15 @@ use App\Http\Controllers\TicketTrackingController;
 */
 
 // Halaman awal
-Route::view('/', 'frontend.index')->name('home');
+Route::get('/', function () {
+    if (Auth::check()) {
+        // User sudah login, tampilkan home page normal
+        return view('frontend.index');
+    } else {
+        // User belum login, tampilkan halaman khusus untuk guest
+        return view('frontend.index');
+    }
+})->name('home');
 
 // Frontend pages
 Route::view('/about', 'frontend.about')->name('frontend.about');
@@ -54,10 +63,16 @@ Route::get('/admin/dashboard', AdminDashboard::class)
 
 use App\Http\Controllers\Frontend\ProfileController;
 
-// Profile
-Route::get('/profile', [ProfileController::class, 'show'])
-    ->middleware(['auth'])
-    ->name('profile');
+
+// ================== SETTINGS ROUTES ==================
+Route::middleware(['auth'])->prefix('settings')->name('settings.')->group(function () {
+    Route::get('/', [ProfileController::class, 'showSettings'])->name('settings');
+    Route::get('/profile', [ProfileController::class, 'showProfile'])->name('profile');
+    Route::get('/password', [ProfileController::class, 'showPassword'])->name('password');
+    Route::get('/service-history', [ProfileController::class, 'showServiceHistory'])->name('service-history');
+    Route::get('/ticket-detail/{nomor_tiket}', [ProfileController::class, 'showTicketDetail'])->name('ticket-detail');
+    Route::get('/home', [ProfileController::class, 'showHome'])->name('home');
+});
 
 // ================== OTP VERIFICATION ==================
 Route::middleware('guest')->group(function () {

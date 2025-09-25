@@ -59,7 +59,7 @@
             <i class="bi bi-chevron-down ms-1"></i>
           </a>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
-            <li><a class="dropdown-item" href="{{ route('profile.show') }}">Profile</a></li>
+            <li><a class="dropdown-item" href="{{ route('settings.profile') }}">Profile</a></li>
             <li><hr class="dropdown-divider"></li>
             <li>
               <form method="POST" action="{{ route('logout') }}">

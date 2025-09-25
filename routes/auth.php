@@ -33,9 +33,7 @@ Route::middleware('auth')->group(function () {
     Volt::route('confirm-password', 'pages.auth.confirm-password')
         ->name('password.confirm');
 
-    // Profile route
-    Route::get('profile', [App\Http\Controllers\Frontend\ProfileController::class, 'show'])
-        ->name('profile.show');
+
 
     // Add logout route
     Route::post('logout', function () {

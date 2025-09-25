@@ -4,23 +4,42 @@
         <div class="logo_name">NOC KITB</div>
         <i class='bx bx-menu' id="btn"></i>
     </div>
+
     <ul class="nav-list">
         <li>
-            <a href="{{ route('profile.show') }}">
+            <a href="{{ route('settings.profile') }}">
                 <i class='bx bx-user'></i>
                 <span class="links_name">Profile</span>
             </a>
             <span class="tooltip">Profile</span>
         </li>
+
         <li>
-            <a href="{{ route('profile.show') }}?tab=service-history">
+            <a href="{{ route('settings.service-history') }}">
                 <i class='bx bx-history'></i>
                 <span class="links_name">Riwayat Pelayanan</span>
             </a>
             <span class="tooltip">Riwayat Pelayanan</span>
         </li>
-        <li>
 
+        <li> 
+            <a href="{{ route('settings.settings') }}">
+                <i class='bx bx-cog'></i>
+                <span class="links_name">Settings</span>
+            </a>
+            <span class="tooltip">Settings</span>
+        </li>
+
+        <!-- Tombol Home di bawah semua menu -->
+        <li class="home-button">
+            <a href="{{ route('home') }}">
+                <i class='bx bx-home'></i>
+                <span class="links_name">Home</span>
+            </a>
+            <span class="tooltip">Home</span>
+        </li>
+
+        <!-- Profile Logout -->
         <li class="profile">
             <div class="profile-details">
                 <img src="{{ Auth::user()->profile_photo_url ?? asset('assets/img/dummy.png') }}" alt="profileImg">
@@ -40,14 +59,12 @@
 </div>
 
 <style>
-/* Google Font Link */
-/* Google Font Link */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
 *{
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Poppins" , sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 .sidebar{
   position: fixed;
@@ -55,7 +72,7 @@
   top: 0;
   height: 100%;
   width: 78px;
-  background: #1e4356; /* warna utama sidebar */
+  background: #1e4356;
   padding: 6px 14px;
   z-index: 99;
   transition: all 0.5s ease;
@@ -138,39 +155,6 @@
 .sidebar.open li .tooltip{
   display: none;
 }
-.sidebar input{
-  font-size: 15px;
-  color: #FFF;
-  font-weight: 400;
-  outline: none;
-  height: 50px;
-  width: 50px;
-  border: none;
-  border-radius: 12px;
-  transition: all 0.5s ease;
-  background: #163544; /* lebih gelap biar nyatu */
-}
-.sidebar.open input{
-  padding: 0 20px 0 50px;
-  width: 100%;
-}
-.sidebar .bx-search{
-  position: absolute;
-  top: 50%;
-  left: 0;
-  transform: translateY(-50%);
-  font-size: 22px;
-  background: #163544;
-  color: #FFF;
-}
-.sidebar.open .bx-search:hover{
-  background: #163544;
-  color: #FFF;
-}
-.sidebar .bx-search:hover{
-  background: #285c73;
-  color: #fff;
-}
 .sidebar li a{
   display: flex;
   height: 100%;
@@ -179,10 +163,10 @@
   align-items: center;
   text-decoration: none;
   transition: all 0.4s ease;
-  background: #1e4356; /* sama dengan warna sidebar */
+  background: #1e4356;
 }
 .sidebar li a:hover{
-  background: #285c73; /* lebih terang saat hover */
+  background: #285c73;
 }
 .sidebar li a .links_name{
   color: #fff;
@@ -208,6 +192,33 @@
   font-size: 18px;
   border-radius: 12px;
 }
+
+/* === HOME BUTTON KHUSUS === */
+.sidebar li.home-button {
+  position: fixed;
+  bottom: 70px; /* di atas profile */
+  left: 0;
+  width: 78px;
+  transition: all 0.5s ease;
+}
+.sidebar.open li.home-button {
+  width: 250px;
+}
+.sidebar li.home-button a {
+  background: #285c73;
+  color: #fff;
+  font-weight: 500;
+  justify-content: center;
+  text-align: center;
+  padding: 10px;
+  border-radius: 8px;
+  transition: background 0.3s ease;
+}
+.sidebar li.home-button a:hover {
+  background: #327491;
+}
+
+/* === PROFILE === */
 .sidebar li.profile{
   position: fixed;
   height: 60px;
@@ -215,7 +226,7 @@
   left: 0;
   bottom: -8px;
   padding: 10px 14px;
-  background: #163544; /* lebih gelap untuk profile */
+  background: #163544;
   transition: all 0.5s ease;
   overflow: hidden;
 }
@@ -260,12 +271,12 @@
   width: 50px;
   background: none;
 }
+
 @media (max-width: 420px) {
   .sidebar li .tooltip{
     display: none;
   }
 }
-
 </style>
 
 <script>
@@ -279,18 +290,16 @@ if (closeBtn) {
         menuBtnChange();
     });
 }
-
 if (searchBtn) {
     searchBtn.addEventListener("click", ()=>{
         sidebar.classList.toggle("open");
         menuBtnChange();
     });
 }
-
 function menuBtnChange() {
     if(sidebar.classList.contains("open")){
         closeBtn.classList.replace("bx-menu", "bx-menu-alt-right");
-    }else {
+    } else {
         closeBtn.classList.replace("bx-menu-alt-right","bx-menu");
     }
 }

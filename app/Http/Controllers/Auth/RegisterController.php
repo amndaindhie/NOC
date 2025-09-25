@@ -40,6 +40,7 @@ class RegisterController extends Controller
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
+                'password_length' => strlen($request->password),
             ], 3600);
 
             // Generate OTP
@@ -69,7 +70,7 @@ class RegisterController extends Controller
             if ($request->expectsJson() || $request->ajax()) {
                 return response()->json([
                     'success' => true,
-                    'message' => 'OTP telah dikirim ke email Anda. Silakan verifikasi untuk menyelesaikan registrasi.',
+                    'message' => 'OTP has been sent to your email. Please verify to complete registration.',
                     'email' => $request->email
                 ]);
             }
@@ -86,13 +87,13 @@ class RegisterController extends Controller
             if ($request->expectsJson() || $request->ajax()) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Terjadi kesalahan saat proses registrasi. Silakan coba lagi.',
-                    'errors' => ['email' => ['Terjadi kesalahan saat proses registrasi. Silakan coba lagi.']]
+                    'message' => 'An error occurred during the registration process. Please try again.',
+                    'errors' => ['email' => ['An error occurred during the registration process. Please try again.']]
                 ], 422);
             }
 
             return back()->withErrors([
-                'email' => 'Terjadi kesalahan saat proses registrasi. Silakan coba lagi.'
+                'email' => 'An error occurred during the registration process. Please try again.'
             ])->withInput();
         }
     }
