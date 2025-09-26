@@ -37,7 +37,7 @@
         </li>
 
         <li>
-          <a href="{{ route('frontend.tracking') }}" class="{{ request()->routeIs('frontend.tracking') ? 'active' : '' }}">Tracking Request</a>
+          <a href="{{ route('frontend.tracking') }}" class="{{ request()->routeIs('frontend.tracking') ? 'active' : '' }}">Track Request</a>
         </li>
         <li>
           <a href="{{ route('frontend.showpdf') }}" class="{{ request()->routeIs('frontend.showpdf') ? 'active' : '' }}">Regulations</a>
