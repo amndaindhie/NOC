@@ -6,6 +6,9 @@ $hide_navbar = true;
 @endphp
 
 @section('content')
+@php
+$sidebar_open = true;
+@endphp
 @if(Auth::user()->hasRole('admin'))
     @include('layouts.partials.sidebar')
 @else

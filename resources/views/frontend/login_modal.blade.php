@@ -33,12 +33,22 @@
 <!-- Forgot Password Modal -->
 <div class="modal fade" id="forgotPasswordModal" tabindex="-1" aria-labelledby="forgotPasswordModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
   <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
+    <div class="modal-content position-relative">
+      
+      <!-- Floating Close Button (X) -->
+      <button 
+        type="button" 
+        class="btn btn-light btn-sm position-absolute top-0 end-0 m-2 rounded-circle shadow-sm" 
+        data-bs-dismiss="modal" 
+        aria-label="Close"
+      >
+        <i class="bi bi-x-lg"></i>
+      </button>
+
       <div class="modal-header bg-gradient-primary text-white">
         <h5 class="modal-title" id="forgotPasswordModalLabel">
-          <i class="bi bi-key-fill me-2"></i>{{ __('Lupa Password') }}
+          <i class="bi bi-key-fill me-2"></i>{{ __('Forgot Password') }}
         </h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
 
       <div class="modal-body p-4">
@@ -47,13 +57,14 @@
 
       <div class="modal-footer border-0 justify-content-center">
         <small class="text-muted">
-            <i class="bi bi-info-circle me-1"></i>
-            Didn't receive the email? Check your spam folder or try again in a few minutes.
+          <i class="bi bi-info-circle me-1"></i>
+          Didn't receive the email? Check your spam folder or try again in a few minutes.
         </small>
       </div>
     </div>
   </div>
 </div>
+
 
 <script>
 // Forgot password modal initialization for login modal context

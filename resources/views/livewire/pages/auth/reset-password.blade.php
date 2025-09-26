@@ -65,7 +65,7 @@ new #[Layout('layouts.guest')] class extends Component
             return;
         }
 
-        Session::flash('status', 'Password Anda telah berhasil direset. Silakan login dengan password baru Anda.');
+        Session::flash('status', 'Your password has been successfully reset. Please log in with your new password.');
 
         $this->redirectRoute('home', navigate: true);
     }
@@ -107,7 +107,7 @@ new #[Layout('layouts.guest')] class extends Component
                             <i class="bi bi-shield-lock-fill" style="font-size: 3rem;"></i>
                         </div>
                         <h3 class="mb-0 fw-bold">{{ __('Reset Password') }}</h3>
-                        <p class="mb-0 opacity-75">Buat password baru untuk akun Anda</p>
+                        <p class="mb-0 opacity-75">Create a new password for your account</p>
                     </div>
 
                     <div class="card-body p-4">

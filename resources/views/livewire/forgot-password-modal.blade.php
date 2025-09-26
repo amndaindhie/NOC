@@ -21,15 +21,13 @@
 
     <div class="mb-4">
         <p class="text-muted mb-3">
-            {{ __('Masukkan alamat email Anda dan kami akan mengirimkan link reset password.') }}
+            {{ __('Enter your email address and we will send you a password reset link.') }}
         </p>
     </div>
 
     <form wire:submit="sendPasswordResetLink" class="user">
         <div class="form-group mb-4">
-            <label for="email" class="form-label fw-semibold">
-                <i class="bi bi-envelope-at me-2"></i>{{ __('Alamat Email') }}
-            </label>
+
             <div class="input-group">
                 <span class="input-group-text bg-light border-end-0">
                     <i class="bi bi-envelope text-muted"></i>
@@ -40,7 +38,8 @@
                     class="form-control form-control-lg border-start-0 @error('email') is-invalid @enderror"
                     id="email"
                     name="email"
-                    placeholder="Masukkan email Anda"
+                    placeholder="Enter your email"
+                    style="font-size: 1rem;"
                     required
                     autofocus
                     autocomplete="email"
@@ -49,24 +48,23 @@
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
-            <small class="form-text text-muted">
-                Kami akan mengirimkan link reset password ke email ini
-            </small>
+
         </div>
 
         <div class="d-grid">
             <button
                 type="submit"
-                class="btn btn-primary btn-lg"
+                class="btn btn-primary btn-sm w-auto"
                 wire:loading.attr="disabled"
                 wire:loading.class="btn-secondary"
             >
-                <span wire:loading.remove wire:target="sendPasswordResetLink">
-                    <i class="bi bi-send me-2"></i>{{ __('Kirim Link Reset') }}
-                </span>
+            <span wire:loading.remove wire:target="sendPasswordResetLink" class="small" style="font-size: 1rem;">
+                <i class="bi bi-send me-1"></i>{{ __('Send Reset Link') }}
+            </span>
+
                 <span wire:loading wire:target="sendPasswordResetLink">
                     <span class="spinner-border spinner-border-sm me-2" role="status"></span>
-                    Mengirim...
+                    Sending...
                 </span>
             </button>
         </div>

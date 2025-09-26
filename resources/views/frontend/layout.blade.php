@@ -35,10 +35,27 @@
 </head>
 
 <body class="@yield('body_class', 'index-page')">
+  @if (Session::has('message'))
+    <div class="alert alert-success alert-dismissible fade show position-fixed top-0 start-0 end-0" role="alert" style="z-index: 1060; background-color: #d4edda !important; border: 1px solid #c3e6cb;">
+      <div class="container">
+        {{ Session::pull('message') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    </div>
+    <script>
+      setTimeout(function() {
+        var alert = document.querySelector('.alert-success');
+        if (alert) {
+          var bsAlert = new bootstrap.Alert(alert);
+          bsAlert.close();
+        }
+      }, 5000);
+    </script>
+  @endif
   @if(!isset($hide_navbar) || !$hide_navbar)
     @include('frontend.navbar')
   @endif
-
+  
   <main class="main">
     @yield('content')
   </main>
