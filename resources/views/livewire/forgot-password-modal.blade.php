@@ -21,14 +21,14 @@
 
     <div class="mb-4">
         <p class="text-muted mb-3">
-            {{ __('Masukkan alamat email Anda dan kami akan mengirimkan link reset password.') }}
+            {{ __('Enter your email address and we will send you a password reset link.') }}
         </p>
     </div>
 
     <form wire:submit="sendPasswordResetLink" class="user">
         <div class="form-group mb-4">
             <label for="email" class="form-label fw-semibold">
-                <i class="bi bi-envelope-at me-2"></i>{{ __('Alamat Email') }}
+                <i class="bi bi-envelope-at me-2"></i>{{ __('Email address') }}
             </label>
             <div class="input-group">
                 <span class="input-group-text bg-light border-end-0">
@@ -50,7 +50,7 @@
                 @enderror
             </div>
             <small class="form-text text-muted">
-                Kami akan mengirimkan link reset password ke email ini
+                We will send a password reset link to this email.
             </small>
         </div>
 
@@ -62,11 +62,11 @@
                 wire:loading.class="btn-secondary"
             >
                 <span wire:loading.remove wire:target="sendPasswordResetLink">
-                    <i class="bi bi-send me-2"></i>{{ __('Kirim Link Reset') }}
+                    <i class="bi bi-send me-2"></i>{{ __('Send Reset Link') }}
                 </span>
                 <span wire:loading wire:target="sendPasswordResetLink">
                     <span class="spinner-border spinner-border-sm me-2" role="status"></span>
-                    Mengirim...
+                    Sending...
                 </span>
             </button>
         </div>
