@@ -21,7 +21,7 @@
       <div class="modal-footer border-0 justify-content-center">
         <small class="text-muted">
             <i class="bi bi-info-circle me-1"></i>
-            Didn't receive the email? Check your spam folder or try again in a few minutes.
+             Didn't get the email? Check your spam folder or retry in a few moments.
         </small>
       </div>
     </div>

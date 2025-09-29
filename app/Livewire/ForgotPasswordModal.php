@@ -41,7 +41,7 @@ class ForgotPasswordModal extends Component
         if ($mailDriver === 'log') {
             session()->flash('status', 'Link reset password telah dicatat dalam log sistem (Development Mode). Dalam production, email akan dikirim ke: ' . $this->email);
         } else {
-            session()->flash('status', 'Link reset password telah dikirim ke email Anda. Silakan periksa inbox Anda.');
+            session()->flash('status', 'A password reset link has been sent to your email. Please check your inbox.');
         }
 
         $this->isLoading = false;

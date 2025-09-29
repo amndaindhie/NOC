@@ -27,9 +27,6 @@
 
     <form wire:submit="sendPasswordResetLink" class="user">
         <div class="form-group mb-4">
-            <label for="email" class="form-label fw-semibold">
-                <i class="bi bi-envelope-at me-2"></i>{{ __('Email address') }}
-            </label>
             <div class="input-group">
                 <span class="input-group-text bg-light border-end-0">
                     <i class="bi bi-envelope text-muted"></i>
@@ -40,7 +37,8 @@
                     class="form-control form-control-lg border-start-0 @error('email') is-invalid @enderror"
                     id="email"
                     name="email"
-                    placeholder="Masukkan email Anda"
+                    style="font-size: 1rem;"
+                    placeholder="Please enter your email"
                     required
                     autofocus
                     autocomplete="email"
@@ -49,9 +47,6 @@
                     <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
-            <small class="form-text text-muted">
-                We will send a password reset link to this email.
-            </small>
         </div>
 
         <div class="d-grid">
@@ -61,7 +56,7 @@
                 wire:loading.attr="disabled"
                 wire:loading.class="btn-secondary"
             >
-                <span wire:loading.remove wire:target="sendPasswordResetLink">
+                <span wire:loading.remove wire:target="sendPasswordResetLink"  class="small" style="font-size: 1rem;>
                     <i class="bi bi-send me-2"></i>{{ __('Send Reset Link') }}
                 </span>
                 <span wire:loading wire:target="sendPasswordResetLink">

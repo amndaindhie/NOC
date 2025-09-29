@@ -48,7 +48,7 @@ class ResetPasswordController extends Controller
         );
 
         if ($status == Password::PASSWORD_RESET) {
-            return redirect()->route('home')->with('message', 'Password Anda telah berhasil direset. Silakan login dengan password baru Anda.');
+            return redirect()->route('home')->with('message', 'Your password has been successfully reset. Please log in with your new password.');
         } else {
             return back()->withErrors(['email' => __($status)])->withInput($request->only('email'));
         }

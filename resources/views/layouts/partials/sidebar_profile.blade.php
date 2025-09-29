@@ -39,9 +39,9 @@
                     <div class="job">{{ Auth::user()->getRoleNames()->first() ?? 'User' }}</div>
                 </div>
             </div>
-            <form method="POST" action="{{ route('logout') }}">
+            <form method="POST" action="{{ route('logout') }}" id="logout-form">
                 @csrf
-                <button type="submit" style="background: none; border: none; color: inherit;">
+                <button type="button" style="background: none; border: none; color: inherit;" onclick="showLogoutModal();">
                     <i class='bx bx-log-out' id="log_out"></i>
                 </button>
             </form>
@@ -49,253 +49,21 @@
     </ul>
 </div>
 
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
-*{
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: "Poppins", sans-serif;
-}
-.sidebar{
-  position: fixed;
-  left: 0;
-  top: 0;
-  height: 100%;
-  width: 78px;
-  background: #1e4356;
-  padding: 6px 14px;
-  z-index: 99;
-  transition: all 0.5s ease;
-}
-.sidebar.open{
-  width: 250px;
-}
-.sidebar .logo-details{
-  height: 60px;
-  display: flex;
-  align-items: center;
-  position: relative;
-}
-.sidebar .logo-details .icon{
-  opacity: 0;
-  transition: all 0.5s ease;
-}
-.sidebar .logo-details .logo_name{
-  color: #fff;
-  font-size: 20px;
-  font-weight: 600;
-  opacity: 0;
-  transition: all 0.5s ease;
-}
-.sidebar.open .logo-details .icon,
-.sidebar.open .logo-details .logo_name{
-  opacity: 1;
-}
-.sidebar .logo-details #btn{
-  position: absolute;
-  top: 50%;
-  right: 0;
-  transform: translateY(-50%);
-  font-size: 22px;
-  cursor: pointer;
-  transition: all 0.5s ease;
-}
-.sidebar.open .logo-details #btn{
-  text-align: right;
-}
-.sidebar i{
-  color: #fff;
-  height: 60px;
-  min-width: 30px;
-  font-size: 28px;
-  line-height: 60px;
-}
-.sidebar .nav-list{
-  margin-top: 20px;
-  height: 100%;
-}
-.sidebar li{
-  position: relative;
-  margin: 8px 0;
-  list-style: none;
-}
-.sidebar li .tooltip{
-  position: absolute;
-  top: -20px;
-  left: calc(100% + 15px);
-  z-index: 3;
-  background: #fff;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
-  padding: 6px 12px;
-  border-radius: 4px;
-  font-size: 15px;
-  font-weight: 400;
-  opacity: 0;
-  white-space: nowrap;
-  pointer-events: none;
-  transition: 0s;
-}
-.sidebar li:hover .tooltip{
-  opacity: 1;
-  pointer-events: auto;
-  transition: all 0.4s ease;
-  top: 50%;
-  transform: translateY(-50%);
-}
-.sidebar.open li .tooltip{
-  display: none;
-}
-.sidebar li a{
-  display: flex;
-  height: 100%;
-  width: 100%;
-  border-radius: 12px;
-  align-items: center;
-  text-decoration: none;
-  transition: all 0.4s ease;
-  background: #1e4356;
-}
-.sidebar li a:hover{
-  background: #285c73;
-}
-.sidebar li a .links_name{
-  color: #fff;
-  font-size: 15px;
-  font-weight: 400;
-  white-space: nowrap;
-  opacity: 0;
-  pointer-events: none;
-  transition: 0.4s;
-}
-.sidebar.open li a .links_name{
-  opacity: 1;
-  pointer-events: auto;
-}
-.sidebar li a:hover .links_name,
-.sidebar li a:hover i{
-  transition: all 0.5s ease;
-  color: #fff;
-}
-.sidebar li i{
-  height: 50px;
-  line-height: 50px;
-  font-size: 18px;
-  border-radius: 12px;
-}
+<div style="display: none;">
+    @include('layouts.partials.styles-sidebar-profile')
+</div>
 
-/* === HOME BUTTON KHUSUS === */
-.sidebar li.home-button {
-  position: fixed;
-  bottom: 70px; /* di atas profile */
-  left: 0;
-  width: 78px;
-  transition: all 0.5s ease;
-}
-.sidebar.open li.home-button {
-  width: 250px;
-}
-.sidebar li.home-button a {
-  background: #285c73;
-  color: #fff;
-  font-weight: 500;
-  justify-content: center;
-  text-align: center;
-  padding: 10px;
-  border-radius: 8px;
-  transition: background 0.3s ease;
-}
-.sidebar li.home-button a:hover {
-  background: #327491;
-}
-
-/* === PROFILE === */
-.sidebar li.profile{
-  position: fixed;
-  height: 60px;
-  width: 78px;
-  left: 0;
-  bottom: -8px;
-  padding: 10px 14px;
-  background: #163544;
-  transition: all 0.5s ease;
-  overflow: hidden;
-}
-.sidebar.open li.profile{
-  width: 250px;
-}
-.sidebar li .profile-details{
-  display: flex;
-  align-items: center;
-  flex-wrap: nowrap;
-}
-.sidebar li img{
-  height: 45px;
-  width: 45px;
-  object-fit: cover;
-  border-radius: 6px;
-  margin-right: 10px;
-}
-.sidebar li.profile .name,
-.sidebar li.profile .job{
-  font-size: 15px;
-  font-weight: 400;
-  color: #fff;
-  white-space: nowrap;
-}
-.sidebar li.profile .job{
-  font-size: 12px;
-}
-.sidebar .profile #log_out{
-  position: absolute;
-  top: 50%;
-  right: 0;
-  transform: translateY(-50%);
-  background: #163544;
-  width: 100%;
-  height: 60px;
-  line-height: 60px;
-  border-radius: 0px;
-  transition: all 0.5s ease;
-}
-.sidebar.open .profile #log_out{
-  width: 50px;
-  background: none;
-}
-
-/* === SEMUA MENU SAAT SIDEBAR TERTUTUP === */
-.sidebar:not(.open) li a {
-  display: flex;
-  justify-content: center;   /* center horizontal (kanan-kiri) */
-  align-items: center;       /* center vertical */
-  padding: 0;                /* rapihin biar icon pas di tengah */
-}
-
-/* Sembunyikan teks menu saat sidebar tertutup */
-.sidebar:not(.open) li a .links_name {
-  display: none;
-}
-
-/* HOME button styling tetap ada warna khusus */
-.sidebar li.home-button a {
-  background: #285c73;
-  color: #fff;
-  font-weight: 500;
-  border-radius: 8px;
-  transition: background 0.3s ease;
-  justify-content: center; /* center saat kecil maupun besar */
-}
-.sidebar li.home-button a:hover {
-  background: #327491;
-}
-
-
-@media (max-width: 420px) {
-  .sidebar li .tooltip{
-    display: none;
-  }
-}
-</style>
+<!-- === Logout Confirmation Modal === -->
+<div id="logoutModal" class="modal">
+  <div class="modal-content">
+    <h3>Are you sure you want to log out?</h3>
+    <p>You’ll need to log in again to access your account.</p>
+    <div class="modal-actions">
+      <button class="btn btn-danger" onclick="confirmLogout()">Yes, Logout</button>
+      <button class="btn btn-secondary" onclick="closeLogoutModal()">Cancel</button>
+    </div>
+  </div>
+</div>
 
 <script>
 let sidebar = document.querySelector(".sidebar");
@@ -321,6 +89,21 @@ function menuBtnChange() {
         closeBtn.classList.replace("bx-menu-alt-right","bx-menu");
     }
 }
+
+function showLogoutModal() {
+  document.getElementById('logoutModal').style.display = 'block';
+}
+function closeLogoutModal() {
+  document.getElementById('logoutModal').style.display = 'none';
+}
+function confirmLogout() {
+  document.getElementById('logout-form').submit();
+}
+
+@if(isset($sidebar_open) && $sidebar_open)
+sidebar.classList.add("open");
+menuBtnChange();
+@endif
 </script>
 
 <!-- Boxicons CDN Link -->
