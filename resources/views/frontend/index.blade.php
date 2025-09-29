@@ -219,17 +219,17 @@
         </div>
 
         <!-- Maps di kanan -->
-        <div class="col-lg-6" data-aos="fade-left" data-aos-delay="200">
-          <div class="ratio ratio-16x9">
-            <iframe
-              src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3960.386625087646!2d110.0015715749969!3d-6.96363569303688!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zNsKwNTcnNDkuMSJTIDExMMKwMDAnMTQuOSJF!5e0!3m2!1sen!2sid!4v1758597099474!5m2!1sen!2sid"
-              style="border: 0; width: 100%; height: 350px"
-              allowfullscreen=""
-              loading="lazy"
-            >
-            </iframe>
-          </div>
-        </div>
+<div class="col-lg-6" data-aos="fade-left" data-aos-delay="200">
+  <div class="ratio ratio-16x9 mb-4 map-wrapper">
+    <iframe
+      src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d3960.386625087646!2d110.0015715749969!3d-6.96363569303688!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zNsKwNTcnNDkuMSJTIDExMMKwMDAnMTQuOSJF!5e0!3m2!1sen!2sid!4v1758597099474!5m2!1sen!2sid"
+      style="border: 0; width: 100%; height: 350px"
+      allowfullscreen=""
+      loading="lazy">
+    </iframe>
+  </div>
+</div>
+
       </div>
     </div>
   </section>

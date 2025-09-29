@@ -260,6 +260,16 @@ h6 {
     --background-color: #1e4356;
 }
 
+.map-wrapper {
+    margin-bottom: 30px; /* kasih jarak default */
+}
+
+@media (max-width: 768px) {
+    .map-wrapper {
+        margin-bottom: 50px; /* lebih lega di HP */
+    }
+}
+
 /*--------------------------------------------------------------
 # Navigation Menu
 --------------------------------------------------------------*/

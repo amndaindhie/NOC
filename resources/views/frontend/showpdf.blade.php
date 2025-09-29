@@ -18,13 +18,20 @@
     <section class="pdf-section py-5">
         <div class="container">
 
-            <!-- Menu PDF + Download -->
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <div class="text-center flex-grow-1">
+            <!-- Header PDF -->
+            <div class="pdf-header d-flex justify-content-between align-items-center mb-4 flex-wrap">
+                <!-- Tabs kiri -->
+                <div class="d-flex align-items-center">
                     <span id="tab-pdf1" class="pdf-tab active me-3" onclick="showPDF('pdf1')">PDF 1</span>
                     <span id="tab-pdf2" class="pdf-tab" onclick="showPDF('pdf2')">PDF 2</span>
                 </div>
-                <!-- Tombol download (berubah sesuai PDF aktif) -->
+
+                <!-- Judul di tengah -->
+                <h4 id="pdf-title" class="fw-bold m-0 text-center flex-grow-1">
+                    Regulasi KITB ke Tenant Manufacture
+                </h4>
+
+                <!-- Download kanan -->
                 <a id="download-btn"
                    href="{{ asset('assets/pdf/REGULASI PENYAMBUNGAN FIBER OPTIK KITB KE TENANT MANUFACTURE.pdf') }}"
                    class="btn btn-noc btn-sm ms-3" target="_blank">
@@ -34,18 +41,22 @@
 
             <!-- PDF 1 -->
             <div id="pdf1" class="pdf-container shadow rounded">
-                <h3 class="text-center mb-3">Regulasi Penyambungan Fiber Optik</h3>
-                <iframe src="{{ asset('assets/pdf/REGULASI PENYAMBUNGAN FIBER OPTIK KITB KE TENANT MANUFACTURE.pdf') }}"
-                        width="100%" height="700px" style="border: none; border-radius: 10px">
-                </iframe>
+                <div class="pdf-wrapper">
+                    <iframe 
+                        src="{{ asset('assets/pdf/REGULASI PENYAMBUNGAN FIBER OPTIK KITB KE TENANT MANUFACTURE.pdf') }}#view=FitH"
+                        class="pdf-frame">
+                    </iframe>
+                </div>
             </div>
 
             <!-- PDF 2 (hidden awalnya) -->
             <div id="pdf2" class="pdf-container shadow rounded d-none">
-                <h3 class="text-center mb-3">Regulasi Penggunaan Jaringan Internet</h3>
-                <iframe src="{{ asset('assets/pdf/REGULASI PENYAMBUNGAN FIBER OPTIK KITB KE TENANT BPSP & RUSUN.pdf') }}"
-                        width="100%" height="700px" style="border: none; border-radius: 10px">
-                </iframe>
+                <div class="pdf-wrapper">
+                    <iframe 
+                        src="{{ asset('assets/pdf/REGULASI PENYAMBUNGAN FIBER OPTIK KITB KE TENANT BPSP & RUSUN.pdf') }}#view=FitH"
+                        class="pdf-frame">
+                    </iframe>
+                </div>
             </div>
 
         </div>
@@ -59,9 +70,49 @@
             padding-bottom: 5px;
         }
         .pdf-tab.active {
-            border-bottom: 2px solid #1e4356; /* warna biru bootstrap */
+            border-bottom: 2px solid #1e4356;
             color: #1e4356;
             font-weight: 600;
+        }
+
+        /* iframe wrapper biar responsif */
+        .pdf-wrapper {
+            position: relative;
+            width: 100%;
+            padding-top: 130%; /* aspect ratio */
+        }
+
+        .pdf-frame {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 10px;
+        }
+
+        /* Responsive tablet */
+        @media (max-width: 768px) {
+            .pdf-wrapper {
+                padding-top: 150%;
+            }
+            .pdf-header {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+        }
+
+        /* Responsive HP kecil */
+        @media (max-width: 480px) {
+            .pdf-wrapper {
+                padding-top: 180%;
+            }
+            .pdf-header {
+                flex-direction: column;
+                align-items: center;
+            }
         }
     </style>
 
@@ -78,15 +129,20 @@
             document.getElementById('tab-pdf1').classList.remove('active');
             document.getElementById('tab-pdf2').classList.remove('active');
 
-            // update tab aktif + link download
+            // update judul + tab aktif + link download
             let downloadBtn = document.getElementById('download-btn');
+            let pdfTitle = document.getElementById('pdf-title');
+
             if (id === 'pdf1') {
                 document.getElementById('tab-pdf1').classList.add('active');
                 downloadBtn.href = "{{ asset('assets/pdf/REGULASI PENYAMBUNGAN FIBER OPTIK KITB KE TENANT MANUFACTURE.pdf') }}";
+                pdfTitle.textContent = "Regulasi KITB ke Tenant Manufacture";
             } else {
                 document.getElementById('tab-pdf2').classList.add('active');
                 downloadBtn.href = "{{ asset('assets/pdf/REGULASI PENYAMBUNGAN FIBER OPTIK KITB KE TENANT BPSP & RUSUN.pdf') }}";
+                pdfTitle.textContent = "Regulasi KITB ke Tenant BPSP & Rusun";
             }
         }
     </script>
 @endsection
+    
