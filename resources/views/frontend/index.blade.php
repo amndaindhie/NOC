@@ -204,7 +204,7 @@
   <!-- /Featured Services Section -->
 
   <!-- Features Section -->
-  <section id="features" class="features section light-background">
+  <section id="features" class="features section light-background mb-4">
     <div class="container">
       <div class="row gy-4 align-items-center">
         <!-- Gambar di kiri -->
