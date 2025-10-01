@@ -70,6 +70,7 @@ let sidebar = document.querySelector(".sidebar");
 let closeBtn = document.querySelector("#btn");
 let searchBtn = document.querySelector(".bx-search");
 
+// === Fungsi Toggle ===
 if (closeBtn) {
     closeBtn.addEventListener("click", ()=>{
         sidebar.classList.toggle("open");
@@ -82,6 +83,7 @@ if (searchBtn) {
         menuBtnChange();
     });
 }
+
 function menuBtnChange() {
     if(sidebar.classList.contains("open")){
         closeBtn.classList.replace("bx-menu", "bx-menu-alt-right");
@@ -90,6 +92,25 @@ function menuBtnChange() {
     }
 }
 
+// === Atur Default State Berdasarkan Resolusi ===
+function setSidebarDefault() {
+    if (window.innerWidth < 768) {
+        // Mobile: default tertutup
+        sidebar.classList.remove("open");
+    } else {
+        // Desktop: default terbuka
+        sidebar.classList.add("open");
+    }
+    menuBtnChange();
+}
+
+// Panggil saat pertama kali load
+setSidebarDefault();
+
+// Update kalau window di-resize
+window.addEventListener("resize", setSidebarDefault);
+
+// === Logout Modal ===
 function showLogoutModal() {
   document.getElementById('logoutModal').style.display = 'block';
 }
@@ -99,11 +120,6 @@ function closeLogoutModal() {
 function confirmLogout() {
   document.getElementById('logout-form').submit();
 }
-
-@if(isset($sidebar_open) && $sidebar_open)
-sidebar.classList.add("open");
-menuBtnChange();
-@endif
 </script>
 
 <!-- Boxicons CDN Link -->
