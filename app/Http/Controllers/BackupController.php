@@ -20,39 +20,47 @@ class BackupController extends Controller
         try {
             $databaseName = config('database.connections.mysql.database');
             $backupFileName = $databaseName . '_' . date('Y-m-d_H-i-s') . '.sql';
-            $backupPath = 'backups/' . $backupFileName; // This will be updated to storage path
-            
+            $relativeBackupPath = 'backups/' . $backupFileName;
+
             // Create backups directory if it doesn't exist
             if (!Storage::exists('backups')) {
                 Storage::makeDirectory('backups');
             }
 
-            // Update the backup path to storage
-            $backupPath = 'backups/' . $backupFileName;
-            $fullBackupPath = storage_path('app/' . $backupPath);
-            
-            // Execute mysqldump command with proper path
+            $fullBackupPath = storage_path('app/' . $relativeBackupPath);
+
+            // Get mysqldump path from config or env, fallback to default
+            $mysqldumpPath = config('backup.mysqldump_path', env('MYSQLDUMP_PATH', 'mysqldump'));
+
+            // Change to storage/app directory to use shorter relative paths
+            $originalDir = getcwd();
+            chdir(storage_path('app'));
+
+            // Build command with mysqldump flags to remove headers/comments and disable extended inserts
             $command = sprintf(
-                '"C:\xampp\mysql\bin\mysqldump.exe" --user=%s --password=%s --host=%s %s > "%s"',
-                config('database.connections.mysql.username'),
-                config('database.connections.mysql.password'),
-                config('database.connections.mysql.host'),
-                $databaseName,
-                $fullBackupPath
+                '%s --skip-comments --skip-triggers --compact --skip-extended-insert --user=%s --password=%s --host=%s %s > %s',
+                escapeshellarg($mysqldumpPath),
+                escapeshellarg(config('database.connections.mysql.username')),
+                escapeshellarg(config('database.connections.mysql.password')),
+                escapeshellarg(config('database.connections.mysql.host')),
+                escapeshellarg($databaseName),
+                escapeshellarg($relativeBackupPath)
             );
-            
-            // Use exec instead of shell_exec for better Windows compatibility
-            // Capture both stdout and stderr
+
+            Log::info('Executing backup command: ' . $command);
+
             exec($command . ' 2>&1', $output, $returnVar);
-            
+
+            // Change back to original directory
+            chdir($originalDir);
+
             if ($returnVar !== 0) {
-                Log::error('Backup failed with return code: ' . $returnVar, ['output' => $output]);
+                Log::error('Backup failed with return code: ' . $returnVar . '. Output: ' . implode("\n", $output));
                 return back()->with('error', 'Backup gagal. Pastikan mysqldump tersedia dan konfigurasi database benar.');
             }
 
-            // Store backup info in the database
             $fileSize = filesize($fullBackupPath);
-            
+
             Backup::create([
                 'file_name' => $backupFileName,
                 'file_size' => $this->formatFileSize($fileSize),
@@ -60,7 +68,6 @@ class BackupController extends Controller
 
             Log::info('Backup created successfully: ' . $backupFileName);
             return back()->with('success', 'Backup berhasil dibuat pada ' . now()->format('d M Y, H:i:s'));
-            
         } catch (\Exception $e) {
             Log::error('Backup error: ' . $e->getMessage());
             return back()->with('error', 'Terjadi kesalahan saat membuat backup: ' . $e->getMessage());
@@ -72,11 +79,11 @@ class BackupController extends Controller
         try {
             $backup = Backup::findOrFail($id);
             $filePath = 'backups/' . $backup->file_name;
-            
+
             if (!Storage::exists($filePath)) {
                 return back()->with('error', 'File backup tidak ditemukan.');
             }
-            
+
             return Storage::download($filePath);
         } catch (\Exception $e) {
             Log::error('Download backup error: ' . $e->getMessage());
@@ -87,8 +94,45 @@ class BackupController extends Controller
     public function restore($id)
     {
         $backup = Backup::findOrFail($id);
-        // TODO: implement restore logic
-        return back()->with('success', 'Database berhasil direstore dari ' . $backup->file_name);
+        $filePath = storage_path('app/backups/' . $backup->file_name);
+
+        if (!file_exists($filePath)) {
+            return back()->with('error', 'File backup tidak ditemukan.');
+        }
+
+        try {
+            // Get mysql path from config or env, fallback to default
+            $mysqlPath = config('backup.mysql_path', env('MYSQL_PATH', 'mysql'));
+
+            $databaseName = config('database.connections.mysql.database');
+            $username = config('database.connections.mysql.username');
+            $password = config('database.connections.mysql.password');
+            $host = config('database.connections.mysql.host');
+
+            // Build restore command
+            $command = sprintf(
+                '%s --user=%s --password=%s --host=%s %s < %s',
+                escapeshellarg($mysqlPath),
+                escapeshellarg($username),
+                escapeshellarg($password),
+                escapeshellarg($host),
+                escapeshellarg($databaseName),
+                escapeshellarg($filePath)
+            );
+
+            exec($command . ' 2>&1', $output, $returnVar);
+
+            if ($returnVar !== 0) {
+                Log::error('Restore failed with return code: ' . $returnVar . '. Output: ' . implode("\n", $output));
+                return back()->with('error', 'Restore gagal. Pastikan mysql tersedia dan konfigurasi database benar.');
+            }
+
+            Log::info('Database restored successfully from: ' . $backup->file_name);
+            return back()->with('success', 'Database berhasil direstore dari ' . $backup->file_name);
+        } catch (\Exception $e) {
+            Log::error('Restore error: ' . $e->getMessage());
+            return back()->with('error', 'Terjadi kesalahan saat merestore database: ' . $e->getMessage());
+        }
     }
 
     public function destroy($id)
@@ -96,11 +140,11 @@ class BackupController extends Controller
         try {
             $backup = Backup::findOrFail($id);
             $filePath = 'backups/' . $backup->file_name;
-            
+
             if (Storage::exists($filePath)) {
                 Storage::delete($filePath);
             }
-            
+
             $backup->delete();
 
             return back()->with('success', 'Backup berhasil dihapus');

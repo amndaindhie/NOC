@@ -31,41 +31,52 @@ class DailyBackupCommand extends Command
         try {
             $databaseName = config('database.connections.mysql.database');
             $backupFileName = $databaseName . '_' . date('Y-m-d_H-i-s') . '.sql';
-            $backupPath = 'backups/' . $backupFileName;
-            
+
             // Create backups directory if it doesn't exist
             if (!Storage::exists('backups')) {
                 Storage::makeDirectory('backups');
             }
 
-            // Update the backup path to storage
-            $backupPath = 'backups/' . $backupFileName;
-            $fullBackupPath = storage_path('app/' . $backupPath);
-            
-            // Execute mysqldump command with proper path
+            // Use relative path from storage/app to avoid command line length issues
+            $relativeBackupPath = 'backups/' . $backupFileName;
+            $fullBackupPath = storage_path('app/' . $relativeBackupPath);
+
+            // Get mysqldump path from config or env, fallback to default
+            $mysqldumpPath = config('backup.mysqldump_path', env('MYSQLDUMP_PATH', 'mysqldump'));
+
+            // Change to storage/app directory to use shorter relative paths
+            $originalDir = getcwd();
+            chdir(storage_path('app'));
+
+            // Build command with mysqldump flags to remove headers/comments
             $command = sprintf(
-                '"C:\xampp\mysql\bin\mysqldump.exe" --user=%s --password=%s --host=%s %s > "%s"',
-                config('database.connections.mysql.username'),
-                config('database.connections.mysql.password'),
-                config('database.connections.mysql.host'),
-                $databaseName,
-                $fullBackupPath
+                '%s --skip-comments --no-create-info --compact --user=%s --password=%s --host=%s %s > %s',
+                escapeshellarg($mysqldumpPath),
+                escapeshellarg(config('database.connections.mysql.username')),
+                escapeshellarg(config('database.connections.mysql.password')),
+                escapeshellarg(config('database.connections.mysql.host')),
+                escapeshellarg($databaseName),
+                escapeshellarg($relativeBackupPath)
             );
-            
-            // Use exec instead of shell_exec for better Windows compatibility
-            // Capture both stdout and stderr
+
+            Log::info('Executing backup command: ' . $command);
+
             exec($command . ' 2>&1', $output, $returnVar);
-            
+
+            // Change back to original directory
+            chdir($originalDir);
+
             if ($returnVar !== 0) {
-                Log::error('Daily backup failed with return code: ' . $returnVar, ['output' => $output]);
+                $errorOutput = implode("\n", $output);
+                Log::error('Daily backup failed with return code: ' . $returnVar . '. Output: ' . $errorOutput);
                 $this->error('Backup gagal. Pastikan mysqldump tersedia dan konfigurasi database benar.');
-                $this->error('Error output: ' . $output);
+                $this->error('Error output: ' . $errorOutput);
                 return 1;
             }
 
             // Store backup info in the database
             $fileSize = filesize($fullBackupPath);
-            
+
             Backup::create([
                 'file_name' => $backupFileName,
                 'file_size' => $this->formatFileSize($fileSize),
@@ -73,9 +84,9 @@ class DailyBackupCommand extends Command
 
             Log::info('Daily backup created successfully: ' . $backupFileName);
             $this->info('Backup harian berhasil dibuat: ' . $backupFileName);
-            
+
             return 0;
-            
+
         } catch (\Exception $e) {
             Log::error('Daily backup error: ' . $e->getMessage());
             $this->error('Terjadi kesalahan saat membuat backup harian: ' . $e->getMessage());
