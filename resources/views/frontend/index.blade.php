@@ -99,7 +99,7 @@
           data-aos-delay="200"
         >
           <h3>What Is NOC?</h3>
-          <p class="fst-italic">
+          <p>
             NOC KITB refers to the Network Operations Center (NOC) located
             within the Kawasan Industri Terpadu Batang (KITB), which is a
             special economic zone in Batang, Central Java.

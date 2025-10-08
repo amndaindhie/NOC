@@ -35,7 +35,7 @@
                 <i class="bi bi-geo-alt"></i>
                 <h3>Address</h3>
                 <p class="address-text">
-                  Jl. Kw. Industri Terpadu Batang, Segan, Sawangan, Kec.
+                  Jl. Kws. Industri Terpadu Batang, Segan, Sawangan, Kec.
                   Gringsing, Kabupaten Batang, Jawa Tengah 51281
                 </p>
               </div>

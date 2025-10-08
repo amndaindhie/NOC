@@ -23,7 +23,7 @@
                 </div>
                 <div class="col-lg-6 content" data-aos="fade-up" data-aos-delay="200">
                     <h3>History of Network Operation Center (NOC)</h3>
-                    <p class="fst-italic">
+                    <p>
                         The NOC began in the 1970s in response to the
                         pressing need for monitoring and management of
                         complex telecommunications networks. The

@@ -29,7 +29,7 @@
     </li>
     <li>
       <i class="bi bi-chevron-right"></i>
-      <a href="{{ route('frontend.tracking') }}">Tracking Request</a>
+      <a href="{{ route('frontend.tracking') }}">Track Request</a>
     </li>
       <li>
       <i class="bi bi-chevron-right"></i> 
