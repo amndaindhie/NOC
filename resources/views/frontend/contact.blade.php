@@ -49,7 +49,7 @@
               >
                 <i class="bi bi-telephone"></i>
                 <h3>Call Us</h3>
-                <p>+1 5589 55488 55</p>
+                <p>(+62) 8123-1323</p>
               </div>
             </div>
 

@@ -205,7 +205,7 @@
                         <img src="{{ asset('assets/img/fasilitas/fasilitas (6).jpg') }}" class="img-fluid" alt="" />
                     </div>
                     <div class="member-info text-center">
-                        <h4>Breakout Space</h4>
+                        <h4>Work Space</h4>
                         <p>
                             A cozy lounge area where employees can relax, recharge, and engage in informal discussions.
                         </p>
