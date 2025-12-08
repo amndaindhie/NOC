@@ -42,13 +42,49 @@
 <li class="dropdown">
   <a href="#">
     <i class="bi bi-person me-2 fs-5 mb-1"></i> <!-- Icon profil ditambahkan -->
-    <span>{{ Auth::user()->name }}</span> 
+    <span>{{ Auth::user()->name }}</span>
     <i class="bi bi-chevron-down toggle-dropdown"></i>
   </a>
 
   <ul>
+    @php
+      $user = auth()->user();
+      $userRoles = $user ? $user->getRoleNames() : collect();
+      $isAdmin = $user && (
+        $user->hasRole('admin') ||
+        $user->hasRole('Admin') ||
+        $userRoles->contains('admin') ||
+        $userRoles->contains('Admin')
+      );
+
+      // Debug log
+      \Log::info('Frontend Navbar Auth Check', [
+        'user_id' => $user ? $user->id : null,
+        'user_name' => $user ? $user->name : null,
+        'user_email' => $user ? $user->email : null,
+        'roles' => $userRoles->toArray(),
+        'isAdmin' => $isAdmin,
+      ]);
+    @endphp
+
+    {{-- Debug in HTML comment --}}
+    <!-- DEBUG INFO -->
+    <!-- User: {{ $user ? $user->name : 'NULL' }} ({{ $user ? $user->email : 'NULL' }}) -->
+    <!-- Roles: {{ $userRoles->implode(', ') ?: 'NONE' }} -->
+    <!-- Is Admin: {{ $isAdmin ? 'YES' : 'NO' }} -->
+
+    @if($isAdmin)
+    <li>
+      <a href="{{ route('admin.dashboard') }}">
+        <i class="bi bi-speedometer2 me-2"></i>
+        Dashboard Admin
+      </a>
+    </li>
+    @endif
+
     <li>
       <a href="{{ route('settings.profile') }}">
+        <i class="bi bi-person me-2"></i>
         Profile
       </a>
     </li>

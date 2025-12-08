@@ -9,16 +9,12 @@ $hide_navbar = true;
 @php
 $sidebar_open = true;
 @endphp
-@if(Auth::user()->hasRole('admin'))
-    @include('layouts.partials.sidebar')
-@else
     @include('layouts.partials.sidebar_profile')
-@endif
 
 <div class="main-content">
-    <div class="card shadow-sm border-0">
-        <div class="card-header bg-white border-0">
-            <h2 class="card-title mb-0">⚙️ Profile</h2>
+    <div class="border-0 shadow-sm card">
+        <div class="bg-white border-0 card-header">
+            <h2 class="mb-0 card-title">⚙️ Profile</h2>
         </div>
         <div class="card-body">
             <div class="form-container">

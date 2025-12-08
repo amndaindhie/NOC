@@ -151,6 +151,45 @@
                 @endif
             </div>
 
+            <!-- Bukti Selesai (Completion Evidence) -->
+            @if ($maintenance->bukti_selesai_path)
+                <div class="mt-6">
+                    <h3 class="text-lg font-semibold mb-4 text-gray-900 dark:text-white">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block mr-2 text-green-500" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        </svg>
+                        Bukti Selesai Maintenance
+                    </h3>
+                    <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                        <div class="flex flex-col items-center">
+                            <img src="{{ asset('storage/' . $maintenance->bukti_selesai_path) }}" 
+                                 alt="Bukti Selesai Maintenance" 
+                                 class="max-w-full md:max-w-2xl rounded-lg shadow-md border border-gray-300 dark:border-gray-600">
+                            <p class="mt-3 text-sm text-gray-600 dark:text-gray-400">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline-block mr-1" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                Foto bukti penyelesaian maintenance
+                            </p>
+                            <a href="{{ asset('storage/' . $maintenance->bukti_selesai_path) }}" 
+                               target="_blank"
+                               class="mt-2 text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 text-sm flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                                </svg>
+                                Lihat gambar ukuran penuh
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            @endif
+
             <!-- Informasi Waktu -->
             <div class="mt-6">
                 <h3 class="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Informasi Waktu</h3>

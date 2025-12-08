@@ -28,7 +28,9 @@ class NocMaintenanceRequest extends Model
         'dokumen_path',
         'dokumen_filename',
         'dokumen_mime_type',
-        'dokumen_size'
+        'dokumen_size',
+        'bukti_selesai_path',
+        'bukti_selesai_filename'
     ];
 
     protected $casts = [
@@ -40,7 +42,7 @@ class NocMaintenanceRequest extends Model
     protected static function boot()
     {
         parent::boot();
-        
+
         static::creating(function ($model) {
             $model->nomor_tracking = TicketNumberGenerator::generateForType('maintenance');
         });

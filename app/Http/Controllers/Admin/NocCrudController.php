@@ -329,6 +329,7 @@ class NocCrudController extends Controller
         $request->validate([
             'status' => 'required|string|in:Diterima,Proses,Selesai,Ditolak',
             'comment' => 'nullable|string|max:500',
+            'bukti_selesai' => 'nullable|image|mimes:jpeg,jpg,png|max:2048',
         ]);
 
         $maintenance = NocMaintenanceRequest::findOrFail($id);
@@ -340,6 +341,21 @@ class NocCrudController extends Controller
         // Set tanggal_selesai automatically when status is changed to "Selesai"
         if ($request->status === 'Selesai') {
             $data['tanggal_selesai'] = now();
+
+            // Handle bukti selesai upload
+            if ($request->hasFile('bukti_selesai')) {
+                // Delete old file if exists
+                if ($maintenance->bukti_selesai_path && Storage::disk('public')->exists($maintenance->bukti_selesai_path)) {
+                    Storage::disk('public')->delete($maintenance->bukti_selesai_path);
+                }
+
+                $file = $request->file('bukti_selesai');
+                $fileName = time() . '_' . $file->getClientOriginalName();
+                $filePath = $file->storeAs('maintenance/bukti_selesai', $fileName, 'public');
+
+                $data['bukti_selesai_path'] = $filePath;
+                $data['bukti_selesai_filename'] = $fileName;
+            }
         }
 
         // Update the ticket using the service to add tracking entry

@@ -38,7 +38,7 @@
       <div class="alert alert-danger alert-dismissible fade show" role="alert">
         <i class="bi bi-exclamation-triangle-fill me-2"></i>
         <strong>There is an error:</strong>
-        <ul class="mb-0 mt-2">
+        <ul class="mt-2 mb-0">
           @foreach($errors->all() as $error)
             <li>{{ $error }}</li>
           @endforeach
@@ -69,35 +69,35 @@
 
     <!-- Result Section -->
     <div id="resultCard" class="card" style="display: none;">
-      <div class="card-header text-white" style="background-color: #1e4356;">
-        <h2 class="card-title mb-0">Ticket Details</h2>
+      <div class="text-white card-header" style="background-color: #1e4356;">
+        <h2 class="mb-0 card-title">Ticket Details</h2>
         <p class="mb-0">Complete information on the status of your request</p>
       </div>
       <div class="card-body">
         <!-- Ticket Info -->
         <div class="row">
           <div class="col-md-4">
-            <div class="card mb-3">
-              <div class="card-body text-center">
-                <i class="bi bi-tag-fill fs-1 text-primary mb-2"></i>
+            <div class="mb-3 card">
+              <div class="text-center card-body">
+                <i class="mb-2 bi bi-tag-fill fs-1 text-primary"></i>
                 <h5>Ticket Number</h5>
                 <p id="ticketNumberDisplay" class="fw-bold">-</p>
               </div>
             </div>
           </div>
           <div class="col-md-4">
-            <div class="card mb-3">
-              <div class="card-body text-center">
-                <i class="bi bi-check-circle-fill fs-1 text-success mb-2"></i>
+            <div class="mb-3 card">
+              <div class="text-center card-body">
+                <i class="mb-2 bi bi-check-circle-fill fs-1 text-success"></i>
                 <h5>Current Status</h5>
                 <span id="statusBadge" class="badge fs-6"></span>
               </div>
             </div>
           </div>
           <div class="col-md-4">
-            <div class="card mb-3">
-              <div class="card-body text-center">
-                <i class="bi bi-calendar-event fs-1 text-info mb-2"></i>
+            <div class="mb-3 card">
+              <div class="text-center card-body">
+                <i class="mb-2 bi bi-calendar-event fs-1 text-info"></i>
                 <h5>Request Date</h5>
                 <p id="requestDate" class="fw-bold">-</p>
               </div>
@@ -114,7 +114,7 @@
         </div>
 
         <!-- Additional Info -->
-        <div class="card mt-4">
+        <div class="mt-4 card">
           <div class="card-header">
             <h4 class="mb-0">Additional information</h4>
           </div>
@@ -136,6 +136,19 @@
                 <strong>Contact person</strong>
                 <p id="contactPerson">-</p>
               </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bukti Selesai Section (Maintenance) -->
+        <div id="buktiSelesaiSection" class="mt-4 card" style="display: none;">
+          <div class="card-header">
+            <h4 class="mb-0"><i class="bi bi-image-fill me-2"></i>Completion Evidence</h4>
+          </div>
+          <div class="card-body">
+            <div class="text-center">
+              <img id="buktiSelesaiImage" src="" alt="Completion Evidence" class="border rounded img-fluid" style="max-height: 400px;">
+              <p class="mt-2 mb-0 text-muted"><small>Evidence of completion of maintenance work</small></p>
             </div>
           </div>
         </div>
@@ -353,6 +366,17 @@
         const config = getStatusConfig(currentStatus);
         statusBadge.className = `badge ${config.color} ${config.textColor}`;
         statusBadge.innerHTML = `<i class="bi ${config.icon} me-1"></i>${currentStatus || 'Unknown'}`;
+
+        // Show bukti selesai for maintenance tickets with completed status
+        const buktiSelesaiSection = document.getElementById('buktiSelesaiSection');
+        const buktiSelesaiImage = document.getElementById('buktiSelesaiImage');
+
+        if (ticket && ticket.tipe === 'maintenance' && ticket.data.bukti_selesai_path) {
+          buktiSelesaiImage.src = `/storage/${ticket.data.bukti_selesai_path}`;
+          buktiSelesaiSection.style.display = 'block';
+        } else {
+          buktiSelesaiSection.style.display = 'none';
+        }
 
         // Update timeline
         if (timeline && timeline.length > 0) {

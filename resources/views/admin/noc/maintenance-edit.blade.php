@@ -81,7 +81,7 @@
             </div>
 
             <!-- Status Update Form -->
-            <form action="{{ route('admin.noc.maintenance.update', $maintenance->id) }}" method="POST">
+            <form action="{{ route('admin.noc.maintenance.update', $maintenance->id) }}" method="POST" enctype="multipart/form-data">
                 @csrf
 
                 <div class="border-t pt-6">
@@ -110,6 +110,25 @@
                                       class="w-full rounded-lg border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-blue-500 focus:ring-blue-500"
                                       placeholder="Tambahkan komentar terkait update status...">{{ old('comment') }}</textarea>
                         </div>
+
+                        <!-- Bukti Selesai (only shown when status is Selesai) -->
+                        <div id="bukti-container" class="hidden md:col-span-2">
+                            <label for="bukti_selesai" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                Upload Bukti Selesai (Foto) *
+                            </label>
+                            <input type="file" name="bukti_selesai" id="bukti_selesai" accept="image/*"
+                                   class="w-full rounded-lg border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-blue-500 focus:ring-blue-500">
+                            <p class="mt-1 text-sm text-gray-500">Format: JPG, JPEG, PNG (Max: 2MB)</p>
+
+                            @if($maintenance->bukti_selesai_path)
+                                <div class="mt-2">
+                                    <p class="text-sm text-gray-600 dark:text-gray-400 mb-1">Bukti selesai saat ini:</p>
+                                    <img src="{{ asset('storage/' . $maintenance->bukti_selesai_path) }}"
+                                         alt="Bukti Selesai"
+                                         class="max-w-xs rounded border border-gray-300">
+                                </div>
+                            @endif
+                        </div>
                     </div>
 
                     <div class="mt-6 flex space-x-3">
@@ -130,8 +149,11 @@
             const statusSelect = document.getElementById('status');
             const commentContainer = document.getElementById('comment-container');
             const commentTextarea = document.getElementById('comment');
+            const buktiContainer = document.getElementById('bukti-container');
+            const buktiInput = document.getElementById('bukti_selesai');
 
-            function toggleCommentField() {
+            function toggleFields() {
+                // Toggle comment field for Ditolak
                 if (statusSelect.value === 'Ditolak') {
                     commentContainer.classList.remove('hidden');
                     commentTextarea.setAttribute('required', 'required');
@@ -140,13 +162,23 @@
                     commentTextarea.removeAttribute('required');
                     commentTextarea.value = '';
                 }
+
+                // Toggle bukti selesai field for Selesai
+                if (statusSelect.value === 'Selesai') {
+                    buktiContainer.classList.remove('hidden');
+                    buktiInput.setAttribute('required', 'required');
+                } else {
+                    buktiContainer.classList.add('hidden');
+                    buktiInput.removeAttribute('required');
+                    buktiInput.value = '';
+                }
             }
 
             // Initial check
-            toggleCommentField();
+            toggleFields();
 
             // Add event listener
-            statusSelect.addEventListener('change', toggleCommentField);
+            statusSelect.addEventListener('change', toggleFields);
         });
     </script>
 
