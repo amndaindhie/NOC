@@ -90,7 +90,7 @@
                         <div>
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Status</label>
                             <span
-                                class="mt-1 inline-flex px-2 py-1 text-xs font-semibold rounded-full 
+                                class="mt-1 inline-flex px-2 py-1 text-xs font-semibold rounded-full
                                 {{ $maintenance->status == 'Diterima' ? 'bg-blue-100 text-blue-800' : '' }}
                                 {{ $maintenance->status == 'Proses' ? 'bg-yellow-100 text-yellow-800' : '' }}
                                 {{ $maintenance->status == 'Selesai' ? 'bg-green-100 text-green-800' : '' }}
@@ -164,8 +164,8 @@
                     </h3>
                     <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
                         <div class="flex flex-col items-center">
-                            <img src="{{ asset('storage/' . $maintenance->bukti_selesai_path) }}" 
-                                 alt="Bukti Selesai Maintenance" 
+                            <img src="{{ asset('storage/' . $maintenance->bukti_selesai_path) }}"
+                                 alt="Bukti Selesai Maintenance"
                                  class="max-w-full md:max-w-2xl rounded-lg shadow-md border border-gray-300 dark:border-gray-600">
                             <p class="mt-3 text-sm text-gray-600 dark:text-gray-400">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline-block mr-1" fill="none"
@@ -175,7 +175,7 @@
                                 </svg>
                                 Foto bukti penyelesaian maintenance
                             </p>
-                            <a href="{{ asset('storage/' . $maintenance->bukti_selesai_path) }}" 
+                            <a href="{{ asset('storage/' . $maintenance->bukti_selesai_path) }}"
                                target="_blank"
                                class="mt-2 text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 text-sm flex items-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none"
